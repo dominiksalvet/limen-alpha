@@ -1,6 +1,6 @@
 # Limen Alpha
 
-Limen Alpha is a 16-bit RISC processor architecture.
+Limen Alpha is a dual-core 16-bit RISC processor architecture.
 
 ## Documentation
 
