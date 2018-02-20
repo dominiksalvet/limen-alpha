@@ -138,7 +138,7 @@ begin
 
     c_reg_d_in <= rf_x_data;
 
-    reg_file_0 : entity reg_file(rtl)
+    reg_file_0 : entity work.reg_file(rtl)
         port map (
             clk => clk,
 
@@ -171,14 +171,14 @@ begin
     rf_x_index <= ir_reg(2 downto 0) when st_inst_dec = '1' or sc_inst_dec = '1'
                   else ir_reg(8 downto 6);
 
-    sign_extend_0 : entity sign_extend(rtl)
+    sign_extend_0 : entity work.sign_extend(rtl)
         port map (
             opcode   => opcode,
             data_in  => ir_reg(12 downto 3),
             data_out => se_data_out
             );
 
-    alu_0 : entity alu(rtl)
+    alu_0 : entity work.alu(rtl)
         port map (
             operation => alu_operation_reg,
             sub_add   => alu_sub_add_reg,
@@ -204,7 +204,7 @@ begin
     inst_alu_operand_r <= rf_x_data when opcode = OPCODE_ALREG
                           else se_data_out;
 
-    jmp_tester_0 : entity jmp_tester(rtl)
+    jmp_tester_0 : entity work.jmp_tester(rtl)
         port map (
             jmp_type  => jt_jmp_type_reg,
             test_data => jt_test_data_reg,

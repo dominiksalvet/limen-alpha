@@ -27,7 +27,7 @@ architecture rtl of limen_alpha_basys2 is
 
 begin
 
-    clk_divider_la : entity clk_divider(rtl)
+    clk_divider_la : entity work.clk_divider(rtl)
         generic map (
             ONE_CLK_MODE  => false,
             COUNTER_WIDTH => LA_CLK_COUNTER_WIDTH
@@ -40,7 +40,7 @@ begin
             clk_out => la_clk
             );
 
-    limen_alpha_0 : entity limen_alpha(rtl)
+    limen_alpha_0 : entity work.limen_alpha(rtl)
         port map (
             clk   => la_clk,
             rst   => rst,
@@ -53,7 +53,7 @@ begin
             mem_out  => la_mem_out
             );
 
-    ram_0 : entity ram(rtl)
+    ram_0 : entity work.ram(rtl)
         generic map (
             ADDR_WIDTH => RWM_ADDR_WIDTH,
             DATA_WIDTH => 16

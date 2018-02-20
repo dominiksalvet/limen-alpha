@@ -76,7 +76,7 @@ begin
     mem_out <= core_1_mem_out when core_1_mem_excl = '1'
                else core_0_mem_out;
 
-    core_0 : entity core(rtl)
+    core_0 : entity work.core(rtl)
         generic map (
             INT_ADDR   => CORE_0_INT_ADDR,
             IP_REG_RST => CORE_0_IP_REG_RST,
@@ -100,7 +100,7 @@ begin
 
     core_0_mem_excl <= not core_1_mem_excl;
 
-    core_1 : entity core(rtl)
+    core_1 : entity work.core(rtl)
         generic map (
             INT_ADDR   => CORE_1_INT_ADDR,
             IP_REG_RST => CORE_1_IP_REG_RST,
