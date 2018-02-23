@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+-- Standard:    VHDL-1993
+-- Platform:    independent
+-- Dependecies: none
+--------------------------------------------------------------------------------
+-- Description:
+--------------------------------------------------------------------------------
+-- Notes:
+--------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -73,7 +84,7 @@ package body alu_shared is
 end package body alu_shared;
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- MIT License
 --
 -- Copyright (c) 2015-2018 Dominik Salvet
@@ -85,8 +96,8 @@ end package body alu_shared;
 -- copies of the Software, and to permit persons to whom the Software is
 -- furnished to do so, subject to the following conditions:
 --
--- The above copyright notice and this permission notice shall be included in all
--- copies or substantial portions of the Software.
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
 --
 -- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 -- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -95,4 +106,4 @@ end package body alu_shared;
 -- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
