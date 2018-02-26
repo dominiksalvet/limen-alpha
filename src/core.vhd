@@ -1,9 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: core_shared.vhd, reg_file_port.vhd, alu_port.vhd,
---              jmp_tester_port.vhd, reg_file.vhd, sign_extend.vhd, alu.vhd,
---              jmp_tester.vhd, 
+-- Standard: VHDL-1993
+-- Platform: independent 
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -15,10 +12,18 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.core_shared.all;
-use work.reg_file_port.all;
-use work.alu_port.all;
-use work.jmp_tester_port.all;
+use work.core_shared.all; -- core_shared.vhd
+
+use work.reg_file; -- reg_file.vhd
+use work.reg_file_port.all; -- reg_file_port.vhd
+
+use work.sign_extend; -- sign_extend.vhd
+
+use work.alu; -- alu_vhd
+use work.alu_port.all; -- alu_port.vhd
+
+use work.jmp_tester; -- jmp_tester.vhd
+use work.jmp_tester_port.all; -- jmp_tester_port.vhd
 
 
 entity core is

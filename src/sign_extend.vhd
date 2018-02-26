@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: none
+-- Standard: VHDL-1993
+-- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -12,7 +11,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.core_shared.all;
+use work.core_shared.all; -- core_shared.vhd
 
 
 entity sign_extend is

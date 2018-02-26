@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: jmp_tester_port.vhd
+-- Standard: VHDL-1993
+-- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -12,7 +11,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.jmp_tester_port.all;
+use work.jmp_tester_port.all; -- jmp_tester_port.vhd
 
 
 entity jmp_tester is

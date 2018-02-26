@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: reg_file_port.vhd
+-- Standard: VHDL-1993
+-- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -13,7 +12,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.reg_file_port.all;
+use work.reg_file_port.all; -- reg_file_port.vhd
 
 
 entity reg_file is

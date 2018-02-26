@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: alu_port.vhd, alu_shared.vhd
+-- Standard: VHDL-1993
+-- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -13,8 +12,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.alu_port.all;
-use work.alu_shared.all;
+use work.alu_port.all; -- alu_port.vhd
+use work.alu_shared.all; -- alu_shared.vhd
 
 
 entity alu is

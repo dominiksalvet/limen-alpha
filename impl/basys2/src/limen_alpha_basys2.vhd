@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    basys2
--- Dependecies: clk_divider.vhd, limen_alpha.vhd, ram.vhd
+-- Standard: VHDL-1993
+-- Platform: basys2
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -12,6 +11,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
+use work.clk_divider; -- clk_divider.vhd
+
+use work.limen_alpha; -- limen_alpha.vhd
+
+use work.ram; -- ram.vhd
 
 
 entity limen_alpha_basys2 is

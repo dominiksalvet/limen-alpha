@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: core.vhd
+-- Standard: VHDL-1993
+-- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -12,6 +11,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
+use work.core; -- core.vhd
 
 
 entity limen_alpha is
