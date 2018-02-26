@@ -12,26 +12,20 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 
-package alu_port is
+package core_public is
 
-    constant ALU_OR   : std_logic_vector(3 downto 0) := "0000";
-    constant ALU_ORN  : std_logic_vector(3 downto 0) := "0001";
-    constant ALU_AND  : std_logic_vector(3 downto 0) := "0010";
-    constant ALU_ANDN : std_logic_vector(3 downto 0) := "0011";
-    constant ALU_XOR  : std_logic_vector(3 downto 0) := "0100";
-    constant ALU_SLL  : std_logic_vector(3 downto 0) := "0101";
-    constant ALU_SRL  : std_logic_vector(3 downto 0) := "0110";
-    constant ALU_SRA  : std_logic_vector(3 downto 0) := "0111";
-    constant ALU_SLU  : std_logic_vector(3 downto 0) := "1000";
-    constant ALU_SL   : std_logic_vector(3 downto 0) := "1001";
-    constant ALU_SUB  : std_logic_vector(3 downto 0) := "1010";
-    constant ALU_ADD  : std_logic_vector(3 downto 0) := "1011";
-    constant ALU_L    : std_logic_vector(3 downto 0) := "1100";
-    constant ALU_R    : std_logic_vector(3 downto 0) := "1101";
-    constant ALU_LR   : std_logic_vector(3 downto 0) := "1110";
-    constant ALU_RL   : std_logic_vector(3 downto 0) := "1111";
+    constant OPCODE_ASIMM  : std_logic_vector(2 downto 0) := "000";
+    constant OPCODE_TSIMM  : std_logic_vector(2 downto 0) := "001";
+    constant OPCODE_LIMM   : std_logic_vector(2 downto 0) := "010";
+    constant OPCODE_ALREG  : std_logic_vector(2 downto 0) := "011";
+    constant OPCODE_LDIMM  : std_logic_vector(2 downto 0) := "100";
+    constant OPCODE_CJSIMM : std_logic_vector(2 downto 0) := "101";
+    constant OPCODE_JSIMM  : std_logic_vector(2 downto 0) := "110";
+    constant OPCODE_JREG   : std_logic_vector(2 downto 0) := "111";
 
-end package alu_port;
+    constant INST_NOP : std_logic_vector(15 downto 0) := x"6000";
+
+end package core_public;
 
 
 --------------------------------------------------------------------------------

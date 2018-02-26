@@ -11,7 +11,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.jmp_tester_port.all; -- jmp_tester_port.vhd
+use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
 
 
 entity jmp_tester is

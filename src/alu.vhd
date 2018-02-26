@@ -12,8 +12,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.alu_port.all; -- alu_port.vhd
-use work.alu_shared.all; -- alu_shared.vhd
+use work.alu_interf.all; -- alu_interf.vhd
+use work.alu_public.all; -- alu_public.vhd
 
 
 entity alu is

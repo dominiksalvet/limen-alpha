@@ -12,18 +12,18 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.core_shared.all; -- core_shared.vhd
+use work.core_public.all; -- core_public.vhd
 
 use work.reg_file; -- reg_file.vhd
-use work.reg_file_port.all; -- reg_file_port.vhd
+use work.reg_file_interf.all; -- reg_file_interf.vhd
 
 use work.sign_extend; -- sign_extend.vhd
 
 use work.alu; -- alu_vhd
-use work.alu_port.all; -- alu_port.vhd
+use work.alu_interf.all; -- alu_interf.vhd
 
 use work.jmp_tester; -- jmp_tester.vhd
-use work.jmp_tester_port.all; -- jmp_tester_port.vhd
+use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
 
 
 entity core is

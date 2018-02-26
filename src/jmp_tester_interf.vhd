@@ -12,7 +12,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 
-package jmp_tester_port is
+package jmp_tester_interf is
 
     constant JMP_NEVER  : std_logic_vector(2 downto 0) := "000";
     constant JMP_ALWAYS : std_logic_vector(2 downto 0) := "001";
@@ -23,7 +23,7 @@ package jmp_tester_port is
     constant JMP_G      : std_logic_vector(2 downto 0) := "110";
     constant JMP_GE     : std_logic_vector(2 downto 0) := "111";
 
-end package jmp_tester_port;
+end package jmp_tester_interf;
 
 
 --------------------------------------------------------------------------------

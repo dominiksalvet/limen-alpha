@@ -11,7 +11,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.core_shared.all; -- core_shared.vhd
+use work.core_public.all; -- core_public.vhd
 
 
 entity sign_extend is
