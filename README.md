@@ -1,4 +1,6 @@
-**Still under development!**
+The processor itself had been described before 3 years and it worked.
+
+**However there is still some work with publishing it. I am working on it intesively!**
 
 # Limen Alpha
 
