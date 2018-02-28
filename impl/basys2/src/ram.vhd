@@ -1,11 +1,15 @@
 --------------------------------------------------------------------------------
--- Standard:    VHDL-1993
--- Platform:    independent
--- Dependecies: none
+-- Standard: VHDL-1993
+-- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
+--     Generic implementation of single port sychronous RW type RAM memory.
 --------------------------------------------------------------------------------
 -- Notes:
+--     1. Since there is a read enable signal, data_out output will be
+--        implemented as register.
+--     2. The module can be implemented as a block memory, if the target
+--        platform supports it.
 --------------------------------------------------------------------------------
 
 
@@ -16,43 +20,48 @@ use ieee.numeric_std.all;
 
 entity ram is
     generic (
-        ADDR_WIDTH : positive;
-        DATA_WIDTH : positive
-        );
+        ADDR_WIDTH : positive; -- bit width of ram address bus
+        DATA_WIDTH : positive -- bit width of ram data bus
+    );
     port (
-        clk : in std_logic;
-
-        we       : in  std_logic;
-        re       : in  std_logic;
-        addr     : in  std_logic_vector(ADDR_WIDTH - 1 downto 0);
-        data_in  : in  std_logic_vector(DATA_WIDTH - 1 downto 0);
-        data_out : out std_logic_vector(DATA_WIDTH - 1 downto 0)
-        );
+        clk : in std_logic; -- clock signal
+        
+        we       : in  std_logic; -- write enable
+        re       : in  std_logic; -- read enable
+        addr     : in  std_logic_vector(ADDR_WIDTH - 1 downto 0); -- address bus
+        data_in  : in  std_logic_vector(DATA_WIDTH - 1 downto 0); -- input data bus
+        data_out : out std_logic_vector(DATA_WIDTH - 1 downto 0) -- output data bus
+    );
 end entity ram;
 
 
 architecture rtl of ram is
-
-    type rwm_array_t is array((2 ** ADDR_WIDTH) - 1 downto 0) of std_logic_vector(DATA_WIDTH - 1 downto 0);
-    signal rwm_array : rwm_array_t;
-
+    
+    -- definition of memory type
+    type mem_t is array((2 ** ADDR_WIDTH) - 1 downto 0) of
+        std_logic_vector(DATA_WIDTH - 1 downto 0);
+    signal mem : mem_t; -- accessible memory signal
+    
 begin
-
-    rwm_array_read_write : process(clk)
+    
+    -- Inputs:  clk, re, addr, mem, we
+    -- Outputs: data_out, mem
+    -- Purpose: Memory read and write mechanism description.
+    mem_read_write : process (clk)
     begin
         if (rising_edge(clk)) then
-
-            if (re = '1') then
-                data_out <= rwm_array(to_integer(unsigned(addr)));
+            
+            if (re = '1') then -- read from the memory
+                data_out <= mem(to_integer(unsigned(addr)));
             end if;
-
-            if (we = '1') then
-                rwm_array(to_integer(unsigned(addr))) <= data_in;
+            
+            if (we = '1') then -- write to the memory
+                mem(to_integer(unsigned(addr))) <= data_in;
             end if;
-
+            
         end if;
-    end process rwm_array_read_write;
-
+    end process mem_read_write;
+    
 end architecture rtl;
 
 
