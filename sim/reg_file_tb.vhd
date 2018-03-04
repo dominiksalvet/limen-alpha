@@ -74,7 +74,7 @@ begin
             y_index <= std_logic_vector(unsigned(y_index) + 3);
             x_index <= std_logic_vector(unsigned(y_index) + 5);
             
-            if(z_index = RI_R0) then
+            if (z_index = REG_R0) then
                 z_wr_en <= not z_wr_en;
             end if;
             
