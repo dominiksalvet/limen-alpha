@@ -21,7 +21,10 @@ architecture behavior of sign_extend_tb is
     -- uut ports
     signal opcode   : std_logic_vector(2 downto 0) := (others => '0');
     signal data_in  : std_logic_vector(9 downto 0) := (others => '0');
-    signal data_out : std_logic_vector(15 downto 0); 
+    signal data_out : std_logic_vector(15 downto 0);
+    
+    -- clock period definition
+    constant CLK_PERIOD : time := 10 ns;
     
 begin
     
@@ -38,11 +41,11 @@ begin
     begin
         
         data_in <= "1010101010";
-        wait for 10 ns;
+        wait for CLK_PERIOD;
         
         loop
             inst_form <= std_logic_vector(unsigned(inst_form) + 1);
-            wait for 10 ns;
+            wait for CLK_PERIOD;
         end loop;
         
     end process;
