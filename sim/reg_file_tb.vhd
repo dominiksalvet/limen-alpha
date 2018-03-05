@@ -60,7 +60,7 @@ begin
         wait for CLK_PERIOD / 2;
         clk <= '1';
         wait for CLK_PERIOD / 2;
-    end process;
+    end process clk_proc;
     
     -- Purpose: Stimulus process.
     stim_proc : process
@@ -81,7 +81,7 @@ begin
             
         end loop;
         
-    end process;
+    end process stim_proc;
     
 end architecture behavior;
 
