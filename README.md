@@ -1,4 +1,4 @@
-The processor itself had been described before 3 years and it worked.
+The processor itself had been described 3 years ago and it worked.
 
 **However there is still some work with publishing it. I am working on it intesively!**
 
