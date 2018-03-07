@@ -1,6 +1,6 @@
-The processor itself had been described 3 years ago and it worked.
+The processor itself was described 3 years ago and it worked that time. However, the default code does not match the format I am using now for publishing my work.
 
-**However there is still some work with publishing it. I am working on it intesively!**
+**I am working on the transition intensively!**
 
 # Limen Alpha
 
@@ -8,7 +8,7 @@ Limen Alpha is a dual-core 16-bit RISC processor architecture.
 
 ## Documentation
 
-All documentation files can be found in [`doc`](doc) directory.
+All documentation files can be found in doc directory.
 
 ## License
 
