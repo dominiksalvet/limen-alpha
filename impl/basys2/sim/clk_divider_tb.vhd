@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------
 -- Description:
---     Method of testing the module uses increasing freq_div to produce output
+--     Method of testing the module uses increasing i_freq_div to produce output
 --     clock with less frequency than original one. Then there is a jump to the
 --     fastest frequency and it should be sheen a very slow react (at the end of
 --     output clock period).
 --------------------------------------------------------------------------------
 -- Notes:
---     1. Transition between any two freq_div must produce only output clock
---        periods so they are directly defined by freq_div and input clock.
+--     1. Transition between any two i_freq_div must produce only output clock
+--        periods so they are directly defined by i_freq_div and input clock.
 --------------------------------------------------------------------------------
 
 
@@ -24,117 +24,108 @@ end entity clk_divider_tb;
 architecture behavior of clk_divider_tb is
     
     -- uut generics
-    constant FREQ_DIV_MAX_VALUE : positive := 7;
+    constant g_FREQ_DIV_MAX_VALUE : positive := 7;
     
     -- uut ports
-    signal clk : std_logic := '0';
-    signal rst : std_logic := '0';
+    signal i_clk : std_logic := '0';
+    signal i_rst : std_logic := '0';
     
-    signal freq_div : positive := 1;
-    signal clk_out  : std_logic;
+    signal i_freq_div : positive := 1;
+    signal o_clk      : std_logic;
     
     -- clock period definition
-    constant CLK_PERIOD : time := 10 ns;
+    constant c_CLK_PERIOD : time := 10 ns;
     
 begin
     
     -- instantiate the unit under test (uut)
     uut : entity work.clk_divider(rtl)
         generic map (
-            FREQ_DIV_MAX_VALUE => FREQ_DIV_MAX_VALUE
+            g_FREQ_DIV_MAX_VALUE => g_FREQ_DIV_MAX_VALUE
         )
         port map (
-            clk => clk,
-            rst => rst,
+            i_clk => i_clk,
+            i_rst => i_rst,
             
-            freq_div => freq_div,
-            clk_out  => clk_out
+            i_freq_div => i_freq_div,
+            o_clk      => o_clk
         );
     
-    -- Purpose: Clock process definition.
-    clk_proc : process
-    begin
-        clk <= '0';
-        wait for CLK_PERIOD / 2;
-        clk <= '1';
-        wait for CLK_PERIOD / 2;
-    end process clk_proc;
+    i_clk <= not i_clk after c_CLK_PERIOD / 2; -- setup i_clk as periodic signal
     
-    -- Purpose: Stimulus process.
-    stim_proc : process
+    stimulus : process is
     begin
         
-        rst <= '1'; -- initialize the module
-        wait for 3 * CLK_PERIOD;
+        i_rst <= '1'; -- initialize the module
+        wait for 3 * c_CLK_PERIOD;
         
-        rst <= '0';
-        wait for 10 * CLK_PERIOD;
+        i_rst <= '0';
+        wait for 10 * c_CLK_PERIOD;
         
-        freq_div <= 2;
-        wait for 10 * CLK_PERIOD;
+        i_freq_div <= 2;
+        wait for 10 * c_CLK_PERIOD;
         
-        freq_div <= 3;
-        wait for 10 * CLK_PERIOD;
+        i_freq_div <= 3;
+        wait for 10 * c_CLK_PERIOD;
         
-        freq_div <= 4;
-        wait for 10 * CLK_PERIOD;
+        i_freq_div <= 4;
+        wait for 10 * c_CLK_PERIOD;
         
-        freq_div <= 7;
-        wait for 10 * CLK_PERIOD;
+        i_freq_div <= 7;
+        wait for 10 * c_CLK_PERIOD;
         
-        -- make fast transition to very high frequency (react should be slow)
-        freq_div <= 1;
-        wait for 10 * CLK_PERIOD;
+        -- make an instant transition to very high frequency (react should be delayed)
+        i_freq_div <= 1;
+        wait for 10 * c_CLK_PERIOD;
         
-        freq_div <= 4;
+        i_freq_div <= 4;
         wait;
         
-    end process stim_proc;
+    end process stimulus;
     
-    -- Purpose: Control process.
-    contr_proc : process
+    verification : process is
     begin
         
         -- asserting only at critical simulation times
-        wait for 4.25 * CLK_PERIOD;
+        wait for 4.25 * c_CLK_PERIOD;
         
-        assert (clk_out = clk)
-            report "Expected inverse clk_out value!" severity error;
-        wait for 0.5 * CLK_PERIOD;
+        assert (o_clk = i_clk)
+            report "Expected inverse o_clk value!" severity error;
+        wait for 0.5 * c_CLK_PERIOD;
         
-        assert (clk_out = clk)
-            report "Expected inverse clk_out value!" severity error;
-        wait for 8.5 * CLK_PERIOD;
+        assert (o_clk = i_clk)
+            report "Expected inverse o_clk value!" severity error;
+        wait for 8.5 * c_CLK_PERIOD;
         
-        assert (clk_out = '0')
-            report "Expected inverse clk_out value!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_clk = '0')
+            report "Expected inverse o_clk value!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (clk_out = '1')
-            report "Expected inverse clk_out value!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_clk = '1')
+            report "Expected inverse o_clk value!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (clk_out = '0')
-            report "Expected inverse clk_out value!" severity error;
-        wait for 11 * CLK_PERIOD;
+        assert (o_clk = '0')
+            report "Expected inverse o_clk value!" severity error;
+        wait for 11 * c_CLK_PERIOD;
         
-        assert (clk_out = '0')
-            report "Expected inverse clk_out value!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_clk = '0')
+            report "Expected inverse o_clk value!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (clk_out = '1')
-            report "Expected inverse clk_out value!" severity error;
-        wait for 26 * CLK_PERIOD;
+        assert (o_clk = '1')
+            report "Expected inverse o_clk value!" severity error;
+        wait for 26 * c_CLK_PERIOD;
         
-        assert (clk_out = '1')
-            report "Expected inverse clk_out value!" severity error;
-        wait for 3.5 * CLK_PERIOD;
+        assert (o_clk = '1')
+            report "Expected inverse o_clk value!" severity error;
+        wait for 3.5 * c_CLK_PERIOD;
         
-        assert (clk_out = '0')
-            report "Expected inverse clk_out value!" severity error;
+        assert (o_clk = '0')
+            report "Expected inverse o_clk value!" severity error;
         wait;
         
-    end process contr_proc;
+    end process verification;
     
 end architecture behavior;
 

@@ -6,8 +6,8 @@
 --     Converter from hexadecimal data to seven segment data.
 --------------------------------------------------------------------------------
 -- Notes:
---     1. If the output seg7_data signal is propaged to LEDs, it is required to
---        respects the LEDs on/off value and inverse the signal eventually.
+--     1. If the output o_seg7_data signal is wired to LEDs, it is required to
+--        respect the LEDs on/off value and inverse the signal eventually.
 --     2. This implementation assumes LED on state as '0' value and LED off
 --        state as '1' value.
 --------------------------------------------------------------------------------
@@ -16,55 +16,38 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+use work.hex_to_seg7_public.all; -- hex_to_seg7_public.vhd
+
 
 entity hex_to_seg7 is
     port (
-        hex_data  : in  std_logic_vector(3 downto 0); -- 4-bit data as encoded hexadecimal number
-        seg7_data : out std_logic_vector(6 downto 0) -- 7-bit sigment data, bit per each segment
+        i_hex_data  : in  std_logic_vector(3 downto 0); -- 4-bit data as encoded hexadecimal number
+        o_seg7_data : out std_logic_vector(6 downto 0) -- 7-bit segment data, bit per each segment
     );
 end entity hex_to_seg7;
 
 
 architecture rtl of hex_to_seg7 is
-    
-    -- images of all seven segment values representing a hexadecimal number: ABCDEFG
-    constant SEG7_0 : std_logic_vector(6 downto 0) := "0000001";
-    constant SEG7_1 : std_logic_vector(6 downto 0) := "1001111";
-    constant SEG7_2 : std_logic_vector(6 downto 0) := "0010010";
-    constant SEG7_3 : std_logic_vector(6 downto 0) := "0000110";
-    constant SEG7_4 : std_logic_vector(6 downto 0) := "1001100";
-    constant SEG7_5 : std_logic_vector(6 downto 0) := "0100100";
-    constant SEG7_6 : std_logic_vector(6 downto 0) := "0100000";
-    constant SEG7_7 : std_logic_vector(6 downto 0) := "0001111";
-    constant SEG7_8 : std_logic_vector(6 downto 0) := "0000000";
-    constant SEG7_9 : std_logic_vector(6 downto 0) := "0000100";
-    constant SEG7_A : std_logic_vector(6 downto 0) := "0001000";
-    constant SEG7_B : std_logic_vector(6 downto 0) := "1100000";
-    constant SEG7_C : std_logic_vector(6 downto 0) := "0110001";
-    constant SEG7_D : std_logic_vector(6 downto 0) := "1000010";
-    constant SEG7_E : std_logic_vector(6 downto 0) := "0110000";
-    constant SEG7_F : std_logic_vector(6 downto 0) := "0111000";
-    
 begin
     
     -- hexadecimal to seven segment conversion implementation
-    with hex_data select seg7_data <= 
-        SEG7_0          when "0000",
-        SEG7_1          when "0001",
-        SEG7_2          when "0010",
-        SEG7_3          when "0011",
-        SEG7_4          when "0100",
-        SEG7_5          when "0101",
-        SEG7_6          when "0110",
-        SEG7_7          when "0111",
-        SEG7_8          when "1000",
-        SEG7_9          when "1001",
-        SEG7_A          when "1010",
-        SEG7_B          when "1011",
-        SEG7_C          when "1100",
-        SEG7_D          when "1101",
-        SEG7_E          when "1110",
-        SEG7_F          when "1111",
+    with i_hex_data select o_seg7_data <= 
+        c_SEG7_0        when "0000",
+        c_SEG7_1        when "0001",
+        c_SEG7_2        when "0010",
+        c_SEG7_3        when "0011",
+        c_SEG7_4        when "0100",
+        c_SEG7_5        when "0101",
+        c_SEG7_6        when "0110",
+        c_SEG7_7        when "0111",
+        c_SEG7_8        when "1000",
+        c_SEG7_9        when "1001",
+        c_SEG7_A        when "1010",
+        c_SEG7_B        when "1011",
+        c_SEG7_C        when "1100",
+        c_SEG7_D        when "1101",
+        c_SEG7_E        when "1110",
+        c_SEG7_F        when "1111",
         (others => 'X') when others;
     
 end architecture rtl;

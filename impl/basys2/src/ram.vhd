@@ -3,11 +3,11 @@
 -- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
---     Generic implementation of single port sychronous RW type RAM memory.
+--     Generic implementation of single port synchronous RW type RAM memory.
 --------------------------------------------------------------------------------
 -- Notes:
---     1. Since there is a read enable signal, data_out output will be
---        implemented as register.
+--     1. Since there is a read enable signal, o_data output will be implemented
+--        as register.
 --     2. The module can be implemented as a block memory, if the target
 --        platform supports it.
 --------------------------------------------------------------------------------
@@ -17,50 +17,89 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.verif_util.all; -- verif_util.vhd
+
 
 entity ram is
     generic (
-        ADDR_WIDTH : positive; -- bit width of ram address bus
-        DATA_WIDTH : positive -- bit width of ram data bus
+        g_ADDR_WIDTH : positive := 4; -- bit width of RAM address bus
+        g_DATA_WIDTH : positive := 8 -- bit width of RAM data bus
     );
     port (
-        clk : in std_logic; -- clock signal
+        i_clk : in std_logic; -- clock signal
         
-        we       : in  std_logic; -- write enable
-        re       : in  std_logic; -- read enable
-        addr     : in  std_logic_vector(ADDR_WIDTH - 1 downto 0); -- address bus
-        data_in  : in  std_logic_vector(DATA_WIDTH - 1 downto 0); -- input data bus
-        data_out : out std_logic_vector(DATA_WIDTH - 1 downto 0) -- output data bus
+        i_we   : in  std_logic; -- write enable
+        i_re   : in  std_logic; -- read enable
+        i_addr : in  std_logic_vector(g_ADDR_WIDTH - 1 downto 0); -- address bus
+        i_data : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0); -- input data bus
+        o_data : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) -- output data bus
     );
 end entity ram;
 
 
 architecture rtl of ram is
     
+    -- output buffers
+    signal b_o_data : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    
     -- definition of memory type
-    type mem_t is array((2 ** ADDR_WIDTH) - 1 downto 0) of
-        std_logic_vector(DATA_WIDTH - 1 downto 0);
-    signal mem : mem_t; -- accessible memory signal
+    type t_mem is array((2 ** g_ADDR_WIDTH) - 1 downto 0) of
+        std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    signal r_mem : t_mem; -- accessible memory signal
     
 begin
     
-    -- Inputs:  clk, re, addr, mem, we
-    -- Outputs: data_out, mem
-    -- Purpose: Memory read and write mechanism description.
-    mem_read_write : process (clk)
+    o_data <= b_o_data;
+    
+    -- Description:
+    --     Memory read and write mechanism description.
+    mem_read_write : process (i_clk) is
     begin
-        if (rising_edge(clk)) then
+        if (rising_edge(i_clk)) then
             
-            if (re = '1') then -- read from the memory
-                data_out <= mem(to_integer(unsigned(addr)));
+            if (i_re = '1') then -- read from the memory
+                b_o_data <= r_mem(to_integer(unsigned(i_addr)));
             end if;
             
-            if (we = '1') then -- write to the memory
-                mem(to_integer(unsigned(addr))) <= data_in;
+            if (i_we = '1') then -- write to the memory
+                r_mem(to_integer(unsigned(i_addr))) <= i_data;
             end if;
             
         end if;
     end process mem_read_write;
+    
+    -- synthesis translate_off
+    input_prevention : process (i_clk) is
+    begin
+        if (rising_edge(i_clk)) then
+            
+            if (i_we = '1' or i_re = '1') then -- read or write means that address must be defined
+                if (not is_vector_of_01(i_addr)) then
+                    report "RAM - undefined address, the address is not exactly defined by '0'" &
+                    " and '1' values only!" severity failure;
+                end if;
+            end if;
+            
+            if (i_we = '1') then -- write also means that input data must be defined
+                if (not is_vector_of_01(i_data)) then
+                    report "RAM - undefined input data, the input data are not exactly defined by" &
+                    " '0' and '1' values only!" severity failure;
+                end if;
+            end if;
+            
+        end if;
+    end process input_prevention;
+    
+    output_prevention : process (b_o_data) is
+    begin
+        if (now > 0 ps) then -- the prevention must start after the simulation initialization
+            if (not is_vector_of_01(b_o_data)) then
+                report "RAM - undefined output data, the output data are not exactly defined by" &
+                " '0' and '1' values only!" severity error;
+            end if;
+        end if;
+    end process output_prevention;
+    -- synthesis translate_on
     
 end architecture rtl;
 

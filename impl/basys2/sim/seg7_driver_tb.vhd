@@ -2,13 +2,13 @@
 -- Description:
 --     Simulation represents an example where the message "cafe" will be
 --     displayed. The seven segment display, which shows "E", has the lowest
---     index and so it is selected by "0001" value on seg7_sel output signal
---     (eventually "1110"). After 8*CLK_PERIOD, the message will be changed to
+--     index and so it is selected by "0001" value on o_seg7_sel output signal
+--     (eventually "1110"). After 8*c_CLK_PERIOD, the message will be changed to
 --     the "face".
 --------------------------------------------------------------------------------
 -- Notes:
---     1. Do not change DIGIT_COUNT unless you know the impact on the
---        simulation.
+--     1. Do not change g_DIGIT_COUNT unless you know the impact on the
+--        simulation progress.
 --------------------------------------------------------------------------------
 
 
@@ -16,6 +16,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 use work.seg7_driver; -- seg7_driver.vhd
+
+use work.hex_to_seg7_public.all; -- hex_to_seg7_public.vhd
 
 
 entity seg7_driver_tb is
@@ -25,111 +27,96 @@ end entity seg7_driver_tb;
 architecture behavior of seg7_driver_tb is
     
     -- uut generics
-    constant LED_ON_VALUE    : std_logic := '1';
-    constant DIGIT_SEL_VALUE : std_logic := '1';
-    constant DIGIT_COUNT     : positive  := 4;
+    constant g_LED_ON_VALUE    : std_logic := '1';
+    constant g_DIGIT_SEL_VALUE : std_logic := '1';
+    constant g_DIGIT_COUNT     : positive  := 4;
     
     -- uut ports
-    signal clk : std_logic := '0';
-    signal rst : std_logic := '0';
+    signal i_clk : std_logic := '0';
+    signal i_rst : std_logic := '0';
     
-    signal data_in   : std_logic_vector((DIGIT_COUNT * 4) - 1 downto 0) := (others => '0');
-    signal seg7_sel  : std_logic_vector(DIGIT_COUNT - 1 downto 0);
-    signal seg7_data : std_logic_vector(6 downto 0);
-    
-    -- constants definitions for the "cafe" and "face" messages
-    constant C_SEG7_FORM : std_logic_vector(6 downto 0) := "1001110";
-    constant A_SEG7_FORM : std_logic_vector(6 downto 0) := "1110111";
-    constant F_SEG7_FORM : std_logic_vector(6 downto 0) := "1000111";
-    constant E_SEG7_FORM : std_logic_vector(6 downto 0) := "1001111";
+    signal i_data      : std_logic_vector((g_DIGIT_COUNT * 4) - 1 downto 0) := (others => '0');
+    signal o_seg7_sel  : std_logic_vector(g_DIGIT_COUNT - 1 downto 0);
+    signal o_seg7_data : std_logic_vector(6 downto 0);
     
     -- clock period definition
-    constant CLK_PERIOD : time := 10 ns;
+    constant c_CLK_PERIOD : time := 10 ns;
     
 begin
     
     -- instantiate the unit under test (uut)
     uut : entity work.seg7_driver(rtl)
         generic map (
-            LED_ON_VALUE    => LED_ON_VALUE,
-            DIGIT_SEL_VALUE => DIGIT_SEL_VALUE,
-            DIGIT_COUNT     => DIGIT_COUNT
+            g_LED_ON_VALUE    => g_LED_ON_VALUE,
+            g_DIGIT_SEL_VALUE => g_DIGIT_SEL_VALUE,
+            g_DIGIT_COUNT     => g_DIGIT_COUNT
         )
         port map (
-            clk => clk,
-            rst => rst,
+            i_clk => i_clk,
+            i_rst => i_rst,
             
-            data_in   => data_in,
-            seg7_sel  => seg7_sel,
-            seg7_data => seg7_data
+            i_data      => i_data,
+            o_seg7_sel  => o_seg7_sel,
+            o_seg7_data => o_seg7_data
         );
     
-    -- Purpose: Clock process definition.
-    clk_proc : process
-    begin
-        clk <= '0';
-        wait for CLK_PERIOD / 2;
-        clk <= '1';
-        wait for CLK_PERIOD / 2;
-    end process clk_proc;
+    i_clk <= not i_clk after c_CLK_PERIOD / 2; -- setup i_clk as periodic signal
     
-    -- Purpose: Stimulus process.
-    stim_proc : process
+    stimulus : process is
     begin
         
-        rst     <= '1'; -- initialize the module
-        data_in <= x"cafe";
-        wait for CLK_PERIOD;
+        i_rst  <= '1'; -- initialize the module
+        i_data <= x"cafe";
+        wait for c_CLK_PERIOD;
         
-        rst <= '0';
-        wait for 7 * CLK_PERIOD;
+        i_rst <= '0';
+        wait for 7 * c_CLK_PERIOD;
         
-        data_in <= x"face";
+        i_data <= x"face";
         wait;
         
-    end process stim_proc;
+    end process stimulus;
     
-    -- Purpose: Control process.
-    contr_proc : process
+    verification : process is
     begin
         
-        wait for CLK_PERIOD;
+        wait for c_CLK_PERIOD;
         
         -- "cafe" message
-        assert (seg7_data = (E_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_seg7_data = (c_SEG7_E xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (seg7_data = (F_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_seg7_data = (c_SEG7_F xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (seg7_data = (A_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_seg7_data = (c_SEG7_A xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (seg7_data = (C_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for 5 * CLK_PERIOD; -- need to wait 9*CLK_PERIOD until the "face" message starts
+        assert (o_seg7_data = (c_SEG7_C xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for 5 * c_CLK_PERIOD; -- need to wait 9*c_CLK_PERIOD until the "face" message starts
         
         -- "face" message
-        assert (seg7_data = (E_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_seg7_data = (c_SEG7_E xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (seg7_data = (C_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_seg7_data = (c_SEG7_C xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (seg7_data = (A_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
-        wait for CLK_PERIOD;
+        assert (o_seg7_data = (c_SEG7_A xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
+        wait for c_CLK_PERIOD;
         
-        assert (seg7_data = (F_SEG7_FORM xor (6 downto 0 => not LED_ON_VALUE)))
-            report "Invalid data sent to the seg7_data output!" severity error;
+        assert (o_seg7_data = (c_SEG7_F xor (6 downto 0 => g_LED_ON_VALUE)))
+            report "Invalid data sent to the o_seg7_data output!" severity error;
         wait;
         
-    end process contr_proc;
+    end process verification;
     
 end architecture behavior;
 

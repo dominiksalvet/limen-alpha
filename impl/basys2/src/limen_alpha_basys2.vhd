@@ -44,14 +44,14 @@ begin
     
     clk_divider_la : entity work.clk_divider(rtl)
         generic map (
-            FREQ_DIV_MAX_VALUE => 200_000
+            g_FREQ_DIV_MAX_VALUE => 200_000
         )
         port map (
-            clk => clk,
-            rst => rst,
+            i_clk => clk,
+            i_rst => rst,
             
-            freq_div => 200_000,
-            clk_out  => la_clk
+            i_freq_div => 200_000,
+            o_clk      => la_clk
         );
     
     limen_alpha_0 : entity work.limen_alpha(rtl)
@@ -69,17 +69,17 @@ begin
     
     ram_0 : entity work.ram(rtl)
         generic map (
-            ADDR_WIDTH => RWM_ADDR_WIDTH,
-            DATA_WIDTH => 16
+            g_ADDR_WIDTH => RWM_ADDR_WIDTH,
+            g_DATA_WIDTH => 16
         )
         port map (
-            clk => la_clk,
+            i_clk => la_clk,
             
-            we       => la_mem_we,
-            re       => '1',
-            addr     => la_mem_addr(RWM_ADDR_WIDTH - 1 downto 0),
-            data_in  => la_mem_out,
-            data_out => la_mem_in
+            i_we   => la_mem_we,
+            i_re   => '1',
+            i_addr => la_mem_addr(RWM_ADDR_WIDTH - 1 downto 0),
+            i_data => la_mem_out,
+            o_data => la_mem_in
         );
     
 end architecture rtl;
