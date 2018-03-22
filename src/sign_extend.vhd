@@ -31,7 +31,7 @@ begin
     
     w_extended_unsigned_data <= 
         i_data(9 downto 2) & (7 downto 0 => '0') when i_data(0) = '1' else
-        (7 downto 0                      => '0') & i_data(9 downto 2);
+        (7 downto 0 => '0') & i_data(9 downto 2);
     
     with i_opcode select o_data <= 
         (11 downto 0 => '0') & i_data(6 downto 3)       when c_OPCODE_LIMM,
