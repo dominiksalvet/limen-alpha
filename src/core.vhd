@@ -63,13 +63,16 @@ architecture rtl of core is
 
     constant REG_MSR_RST : std_logic_vector(15 downto 0) := x"0001";
 
-    signal rf_z_we    : std_logic;
-    signal rf_z_index : std_logic_vector(2 downto 0);
-    signal rf_z_data  : std_logic_vector(15 downto 0);
-    signal rf_y_index : std_logic_vector(2 downto 0);
-    signal rf_y_data  : std_logic_vector(15 downto 0);
-    signal rf_x_index : std_logic_vector(2 downto 0);
-    signal rf_x_data  : std_logic_vector(15 downto 0);
+    -- reg_file_0 ports
+    signal rf_i_z_we    : std_logic;
+    signal rf_i_z_index : std_logic_vector(2 downto 0);
+    signal rf_i_z_data  : std_logic_vector(15 downto 0);
+
+    signal rf_i_y_index : std_logic_vector(2 downto 0);
+    signal rf_o_y_data  : std_logic_vector(15 downto 0);
+
+    signal rf_i_x_index : std_logic_vector(2 downto 0);
+    signal rf_o_x_data  : std_logic_vector(15 downto 0);
 
     signal se_data_out : std_logic_vector(15 downto 0);
 
@@ -150,44 +153,44 @@ begin
     mem_addr <= ip_reg when alu_mem_en = '0'
                 else alu_result;
 
-    mem_out <= rf_x_data;
+    mem_out <= rf_o_x_data;
 
     c_reg_index <= ir_reg(5 downto 3);
 
-    c_reg_d_in <= rf_x_data;
+    c_reg_d_in <= rf_o_x_data;
 
     reg_file_0 : entity work.reg_file(rtl)
         port map (
-            clk => clk,
+            i_clk => clk,
 
-            z_we    => rf_z_we,
-            z_index => rf_z_index,
-            z_data  => rf_z_data,
+            i_z_we    => rf_i_z_we,
+            i_z_index => rf_i_z_index,
+            i_z_data  => rf_i_z_data,
 
-            y_index => rf_y_index,
-            y_data  => rf_y_data,
+            i_y_index => rf_i_y_index,
+            o_y_data  => rf_o_y_data,
 
-            x_index => rf_x_index,
-            x_data  => rf_x_data
-            );
+            i_x_index => rf_i_x_index,
+            o_x_data  => rf_o_x_data
+        );
 
-    rf_z_we <= '1' when clk_phase = CLK_PHASE_1
-               else '0';
+    rf_i_z_we <= '1' when clk_phase = CLK_PHASE_1
+                 else '0';
 
-    rf_z_index <= REG_R0 when st_inst_dec = '1' or opcode = OPCODE_CJSIMM
-                  else ir_reg(2 downto 0);
+    rf_i_z_index <= c_REG_R0 when st_inst_dec = '1' or opcode = OPCODE_CJSIMM
+                    else ir_reg(2 downto 0);
 
-    rf_z_data <= (14 downto 0 => '0') & sync_ack when sc_inst_dec = '1' else
-                 mem_in      when ld_inst_dec = '1' or ll_inst_dec = '1' else
-                 inc_ip_reg  when opcode = OPCODE_JSIMM or opcode = OPCODE_JREG else
-                 c_reg_d_out when ctr_inst_dec = '1'
-                 else alu_result_reg;
+    rf_i_z_data <= (14 downto 0 => '0') & sync_ack when sc_inst_dec = '1' else
+                   mem_in      when ld_inst_dec = '1' or ll_inst_dec = '1' else
+                   inc_ip_reg  when opcode = OPCODE_JSIMM or opcode = OPCODE_JREG else
+                   c_reg_d_out when ctr_inst_dec = '1'
+                   else alu_result_reg;
 
-    rf_y_index <= ir_reg(2 downto 0) when opcode = OPCODE_LDIMM
-                  else ir_reg(5 downto 3);
+    rf_i_y_index <= ir_reg(2 downto 0) when opcode = OPCODE_LDIMM
+                    else ir_reg(5 downto 3);
 
-    rf_x_index <= ir_reg(2 downto 0) when st_inst_dec = '1' or sc_inst_dec = '1'
-                  else ir_reg(8 downto 6);
+    rf_i_x_index <= ir_reg(2 downto 0) when st_inst_dec = '1' or sc_inst_dec = '1'
+                    else ir_reg(8 downto 6);
 
     sign_extend_0 : entity work.sign_extend(rtl)
         port map (
@@ -217,9 +220,9 @@ begin
         ALU_ADD                     when others;
 
     inst_alu_operand_l <= ip_reg when opcode = OPCODE_CJSIMM or opcode = OPCODE_JSIMM
-                          else rf_y_data;
+                          else rf_o_y_data;
 
-    inst_alu_operand_r <= rf_x_data when opcode = OPCODE_ALREG
+    inst_alu_operand_r <= rf_o_x_data when opcode = OPCODE_ALREG
                           else se_data_out;
 
     jmp_tester_0 : entity work.jmp_tester(rtl)
@@ -281,7 +284,7 @@ begin
                     when others                     => jt_jmp_type_reg <= JMP_NEVER;
                 end case;
 
-                jt_test_data_reg <= rf_y_data;
+                jt_test_data_reg <= rf_o_y_data;
 
                 if ((clk_phase = CLK_PHASE_0 or clk_phase = CLK_PHASE_1) and mem_excl = '1') then
                     alu_operation_reg <= ALU_ADD;
@@ -291,7 +294,7 @@ begin
                 else
                     alu_operation_reg <= inst_alu_operation;
                     alu_sub_add_reg   <= (inst_alu_operation(3) and not inst_alu_operation(2)) and
-                                       not (inst_alu_operation(1) and inst_alu_operation(0));
+                                         not (inst_alu_operation(1) and inst_alu_operation(0));
                     alu_operand_l_reg <= inst_alu_operand_l;
                     alu_operand_r_reg <= inst_alu_operand_r;
                 end if;

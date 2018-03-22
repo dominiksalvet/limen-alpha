@@ -17,45 +17,45 @@ use work.reg_file_interf.all; -- reg_file_interf.vhd
 
 entity reg_file is
     port (
-        clk : in std_logic;
-
-        z_we    : in std_logic;
-        z_index : in std_logic_vector(2 downto 0);
-        z_data  : in std_logic_vector(15 downto 0);
-
-        y_index : in  std_logic_vector(2 downto 0);
-        y_data  : out std_logic_vector(15 downto 0);
-
-        x_index : in  std_logic_vector(2 downto 0);
-        x_data  : out std_logic_vector(15 downto 0)
-        );
+        i_clk : in std_logic;
+        
+        i_z_we    : in std_logic;
+        i_z_index : in std_logic_vector(2 downto 0);
+        i_z_data  : in std_logic_vector(15 downto 0);
+        
+        i_y_index : in  std_logic_vector(2 downto 0);
+        o_y_data  : out std_logic_vector(15 downto 0);
+        
+        i_x_index : in  std_logic_vector(2 downto 0);
+        o_x_data  : out std_logic_vector(15 downto 0)
+    );
 end entity reg_file;
 
 
 architecture rtl of reg_file is
-
-    constant REG_R0_RST : std_logic_vector(15 downto 0) := x"0000";
-
-    type reg_array_t is array(7 downto 0) of std_logic_vector(15 downto 0);
-    signal reg_array : reg_array_t := (
-        0      => REG_R0_RST,
+    
+    constant c_REG_R0_VALUE : std_logic_vector(15 downto 0) := x"0000";
+    
+    type t_REGISTERS is array(0 to 7) of std_logic_vector(15 downto 0);
+    signal r_registers : t_REGISTERS := (
+        0      => c_REG_R0_VALUE,
         others => (others => 'U')
         );
-
+    
 begin
-
-    y_data <= reg_array(to_integer(unsigned(y_index)));
-    x_data <= reg_array(to_integer(unsigned(x_index)));
-
-    reg_array_write : process(clk)
+    
+    o_y_data <= r_registers(to_integer(unsigned(i_y_index)));
+    o_x_data <= r_registers(to_integer(unsigned(i_x_index)));
+    
+    registers_write : process (i_clk) is
     begin
-        if (rising_edge(clk)) then
-            if (z_we = '1' and z_index /= REG_R0) then
-                reg_array(to_integer(unsigned(z_index))) <= z_data;
+        if (rising_edge(i_clk)) then
+            if (i_z_we = '1' and i_z_index /= c_REG_R0) then
+                r_registers(to_integer(unsigned(i_z_index))) <= i_z_data;
             end if;
         end if;
-    end process reg_array_write;
-
+    end process registers_write;
+    
 end architecture rtl;
 
 

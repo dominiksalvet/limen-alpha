@@ -20,68 +20,56 @@ end entity reg_file_tb;
 architecture behavior of reg_file_tb is
     
     -- uut ports
-    signal clk : std_logic := '0';
+    signal i_clk : std_logic := '0';
     
-    signal z_we    : std_logic                     := '0';
-    signal z_index : std_logic_vector(2 downto 0)  := (others => '0');
-    signal z_data  : std_logic_vector(15 downto 0) := (others => '0');
+    signal i_z_we    : std_logic                     := '0';
+    signal i_z_index : std_logic_vector(2 downto 0)  := (others => '0');
+    signal i_z_data  : std_logic_vector(15 downto 0) := (others => '0');
     
-    signal y_index : std_logic_vector(2 downto 0) := (others => '0');
-    signal y_data  : std_logic_vector(15 downto 0);
+    signal i_y_index : std_logic_vector(2 downto 0) := (others => '0');
+    signal o_y_data  : std_logic_vector(15 downto 0);
     
-    signal x_index : std_logic_vector(2 downto 0) := (others => '0');
-    signal x_data  : std_logic_vector(15 downto 0);
+    signal i_x_index : std_logic_vector(2 downto 0) := (others => '0');
+    signal o_x_data  : std_logic_vector(15 downto 0);
     
     -- clock period definition
-    constant CLK_PERIOD : time := 10 ns;
+    constant c_CLK_PERIOD : time := 10 ns;
     
 begin
     
     -- instantiate the unit under test (uut)
     uut : entity work.reg_file(rtl)
         port map (
-            clk => clk,
+            i_clk => i_clk,
             
-            z_we    => z_we,
-            z_index => z_index,
-            z_data  => z_data,
+            i_z_we    => i_z_we,
+            i_z_index => i_z_index,
+            i_z_data  => i_z_data,
             
-            y_index => y_index,
-            y_data  => y_data,
+            i_y_index => i_y_index,
+            o_y_data  => o_y_data,
             
-            x_index => x_index,
-            x_data  => x_data
+            i_x_index => i_x_index,
+            o_x_data  => o_x_data
         );
     
-    -- Purpose: Clock process definition.
-    clk_proc : process
-    begin
-        clk <= '0';
-        wait for CLK_PERIOD / 2;
-        clk <= '1';
-        wait for CLK_PERIOD / 2;
-    end process clk_proc;
+    i_clk <= not i_clk after c_CLK_PERIOD / 2; -- setup i_clk as periodic signal
     
-    -- Purpose: Stimulus process.
-    stim_proc : process
+    stimulus : process is
     begin
-        
         loop
-            
             wait for 10 ns;
             
-            z_index <= std_logic_vector(unsigned(z_index) + 1);
-            z_data  <= std_logic_vector(unsigned(z_data) + 1);
-            y_index <= std_logic_vector(unsigned(y_index) + 3);
-            x_index <= std_logic_vector(unsigned(y_index) + 5);
+            i_z_index <= std_logic_vector(unsigned(i_z_index) + 1);
+            i_z_data  <= std_logic_vector(unsigned(i_z_data) + 1);
+            i_y_index <= std_logic_vector(unsigned(i_y_index) + 3);
+            i_x_index <= std_logic_vector(unsigned(i_y_index) + 5);
             
-            if (z_index = REG_R0) then
+            if (i_z_index = c_REG_R0) then
                 z_wr_en <= not z_wr_en;
             end if;
-            
         end loop;
-        
-    end process stim_proc;
+    end process stimulus;
     
 end architecture behavior;
 
