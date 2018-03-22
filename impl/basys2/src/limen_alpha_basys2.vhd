@@ -70,7 +70,9 @@ begin
     ram_0 : entity work.ram(rtl)
         generic map (
             g_ADDR_WIDTH => RWM_ADDR_WIDTH,
-            g_DATA_WIDTH => 16
+            g_DATA_WIDTH => 16,
+            
+            g_MEM_IMG_FILENAME => ""
         )
         port map (
             i_clk => la_clk,

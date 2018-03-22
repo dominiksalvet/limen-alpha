@@ -1,36 +1,46 @@
+--------------------------------------------------------------------------------
+-- Standard: VHDL-1993
+-- Platform: independent
+--------------------------------------------------------------------------------
+-- Description:
+--     The package contains useful utility functions.
+--------------------------------------------------------------------------------
+-- Notes:
+--------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
 
 
-package verif_util is
+package util is
     
     -- Description:
-    --     The function checks the input vector c_VECTOR and returns false if it contains any other
+    --     The function checks the input vector p_VECTOR and returns false if it contains any other
     --     value than '1' or '0' in it's scalar components. The function is not intended to be
     --     synthesized.
-    function is_vector_of_01 (
-            c_VECTOR : std_logic_vector -- input vector
+    function contains_only_01 (
+            p_VECTOR : std_logic_vector -- input vector
         ) return boolean;
     
-end package verif_util;
+end package util;
 
 
-package body verif_util is
+package body util is
     
-    function is_vector_of_01 (
-            c_VECTOR : std_logic_vector
+    function contains_only_01 (
+            p_VECTOR : std_logic_vector
         ) return boolean is
     begin
-        for i in 0 to c_VECTOR'length - 1 loop -- check every vector's scalar component
-            if (c_VECTOR(i) /= '0' and c_VECTOR(i) /= '1') then
+        for i in p_VECTOR'range loop -- check every vector's scalar component
+            if (p_VECTOR(i) /= '0' and p_VECTOR(i) /= '1') then
                 return false;
             end if;
         end loop;
         return true;
-    end function is_vector_of_01;
+    end function contains_only_01;
     
-end package body verif_util;
+end package body util;
 
 
 --------------------------------------------------------------------------------

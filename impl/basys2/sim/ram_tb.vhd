@@ -1,8 +1,10 @@
 --------------------------------------------------------------------------------
 -- Description:
---     First write the data to the memory with respect of the following pattern
---     address=data. Then the simulation will verify the correct memory data by
---     sequential reading the memory addresses.
+--     The simulated RAM is first initialized with a linear data from a file,
+--     then the pattern [address]=address is verified for the initialized data
+--     and new data are written to the memory at the same time. Written data
+--     have the [address]=16*address format. At the end, the simulation verify
+--     this written data by sequential read of the memory addresses.
 --------------------------------------------------------------------------------
 -- Notes:
 --     1. To verify the module by its current implementation, it is required
@@ -27,6 +29,8 @@ architecture behavior of ram_tb is
     constant g_ADDR_WIDTH : positive := 4;
     constant g_DATA_WIDTH : positive := 8;
     
+    constant g_MEM_IMG_FILENAME : string := "mem_img/linear_4_8.txt";
+    
     -- uut ports
     signal i_clk : std_logic := '0';
     
@@ -45,7 +49,9 @@ begin
     uut : entity work.ram(rtl)
         generic map (
             g_ADDR_WIDTH => g_ADDR_WIDTH,
-            g_DATA_WIDTH => g_DATA_WIDTH
+            g_DATA_WIDTH => g_DATA_WIDTH,
+            
+            g_MEM_IMG_FILENAME => g_MEM_IMG_FILENAME
         )
         port map (
             i_clk => i_clk,
@@ -64,22 +70,26 @@ begin
         
         -- write to every address it's value
         i_we <= '1';
+        i_re <= '1';
         for i in 0 to (2 ** g_ADDR_WIDTH) - 1 loop
             i_addr <= std_logic_vector(to_unsigned(i, i_addr'length));
-            i_data <= std_logic_vector(to_unsigned(i, i_data'length));
+            i_data <= std_logic_vector(to_unsigned(16 * i, i_data'length)); -- [address]=16*address
             wait for c_CLK_PERIOD;
+
+            -- asserting to verify the initialization function of the module
+            assert (o_data = std_logic_vector(to_unsigned(i, o_data'length)))
+                report "The read data does not match pattern [address]=address!" severity error;
         end loop;
         
         i_we <= '0';
         -- read each address and verify it's data correctness
-        i_re <= '1';
         for i in 0 to (2 ** g_ADDR_WIDTH) - 1 loop
             i_addr <= std_logic_vector(to_unsigned(i, i_addr'length));
             wait for c_CLK_PERIOD; -- wait for i_clk rising edge to read the desired data
             
             -- asserting to verify the RAM module function
-            assert (o_data = std_logic_vector(to_unsigned(i, o_data'length)))
-                report "The read data does not match pattern address=data!" severity error;
+            assert (o_data = std_logic_vector(to_unsigned(16 * i, o_data'length)))
+                report "The read data does not match pattern [address]=16*address!" severity error;
         end loop;
         wait;
         
