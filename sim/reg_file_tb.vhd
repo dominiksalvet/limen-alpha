@@ -58,7 +58,7 @@ begin
     stimulus : process is
     begin
         loop
-            wait for 10 ns;
+            wait for c_CLK_PERIOD;
             
             i_z_index <= std_logic_vector(unsigned(i_z_index) + 1);
             i_z_data  <= std_logic_vector(unsigned(i_z_data) + 1);
