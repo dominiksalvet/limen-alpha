@@ -10,7 +10,6 @@ Currently I am intensively working on this project transition to format I am usi
   * [`alu_interf.vhd`](src/alu_interf.vhd)
   * [`alu_public.vhd`](src/alu_public.vhd)
   * [`core.vhd`](src/core.vhd)
-  * [`core_public.vhd`](src/core_public.vhd)
   * [`jmp_tester.vhd`](src/jmp_tester.vhd) + [`jmp_tester_tb.vhd`](src/jmp_tester_tb.vhd)
   * [`jmp_tester_interf.vhd`](src/jmp_tester_interf.vhd)
   * [`limen_alpha.vhd`](src/limen_alpha.vhd)

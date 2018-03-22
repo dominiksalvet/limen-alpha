@@ -33,10 +33,10 @@ begin
                 else (7 downto 0 => '0') & data_in(9 downto 2);
 
     with opcode select data_out <=
-        (11 downto 0 => '0') & data_in(6 downto 3)        when OPCODE_LIMM,
-        high_low                                          when OPCODE_LDIMM,
-        (8 downto 0  => data_in(9)) & data_in(9 downto 3) when OPCODE_CJSIMM,
-        (5 downto 0  => data_in(9)) & data_in(9 downto 0) when OPCODE_JSIMM,
+        (11 downto 0 => '0') & data_in(6 downto 3)        when c_OPCODE_LIMM,
+        high_low                                          when c_OPCODE_LDIMM,
+        (8 downto 0  => data_in(9)) & data_in(9 downto 3) when c_OPCODE_CJSIMM,
+        (5 downto 0  => data_in(9)) & data_in(9 downto 0) when c_OPCODE_JSIMM,
         (11 downto 0 => data_in(7)) & data_in(6 downto 3) when others;
 
 end architecture rtl;

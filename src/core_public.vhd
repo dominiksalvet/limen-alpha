@@ -1,30 +1,20 @@
---------------------------------------------------------------------------------
--- Standard: VHDL-1993
--- Platform: independent
---------------------------------------------------------------------------------
--- Description:
---------------------------------------------------------------------------------
--- Notes:
---------------------------------------------------------------------------------
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 
 
 package core_public is
-
-    constant OPCODE_ASIMM  : std_logic_vector(2 downto 0) := "000";
-    constant OPCODE_TSIMM  : std_logic_vector(2 downto 0) := "001";
-    constant OPCODE_LIMM   : std_logic_vector(2 downto 0) := "010";
-    constant OPCODE_ALREG  : std_logic_vector(2 downto 0) := "011";
-    constant OPCODE_LDIMM  : std_logic_vector(2 downto 0) := "100";
-    constant OPCODE_CJSIMM : std_logic_vector(2 downto 0) := "101";
-    constant OPCODE_JSIMM  : std_logic_vector(2 downto 0) := "110";
-    constant OPCODE_JREG   : std_logic_vector(2 downto 0) := "111";
-
-    constant INST_NOP : std_logic_vector(15 downto 0) := x"6000";
-
+    
+    constant c_OPCODE_ASIMM  : std_logic_vector(2 downto 0) := "000";
+    constant c_OPCODE_TSIMM  : std_logic_vector(2 downto 0) := "001";
+    constant c_OPCODE_LIMM   : std_logic_vector(2 downto 0) := "010";
+    constant c_OPCODE_ALREG  : std_logic_vector(2 downto 0) := "011";
+    constant c_OPCODE_LDIMM  : std_logic_vector(2 downto 0) := "100";
+    constant c_OPCODE_CJSIMM : std_logic_vector(2 downto 0) := "101";
+    constant c_OPCODE_JSIMM  : std_logic_vector(2 downto 0) := "110";
+    constant c_OPCODE_JREG   : std_logic_vector(2 downto 0) := "111";
+    
+    constant c_INST_NOP : std_logic_vector(15 downto 0) := x"6000";
+    
 end package core_public;
 
 
