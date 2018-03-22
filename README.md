@@ -5,7 +5,7 @@ Limen Alpha is dual-core 16-bit RISC processor architecture with hardware synchr
 Currently I am intensively working on this project transition to format I am using now, see the list below.
 
 ## TODO list:
-* remaster the following source files:
+* remaster the following source files (first iteration - everything except advanced optimization and commenting):
   * [`alu.vhd`](src/alu.vhd) + [`alu_tb.vhd`](src/alu_tb.vhd)
   * [`alu_interf.vhd`](src/alu_interf.vhd)
   * [`alu_public.vhd`](src/alu_public.vhd)
