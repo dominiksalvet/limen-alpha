@@ -14,7 +14,6 @@ Currently I am intensively working on this project transition to format I am usi
   * [`jmp_tester.vhd`](src/jmp_tester.vhd) + [`jmp_tester_tb.vhd`](src/jmp_tester_tb.vhd)
   * [`jmp_tester_interf.vhd`](src/jmp_tester_interf.vhd)
   * [`limen_alpha.vhd`](src/limen_alpha.vhd)
-  * [`reg_file_interf.vhd`](src/reg_file_interf.vhd)
   * [`sign_extend.vhd`](src/sign_extend.vhd) + [`sign_extend_tb.vhd`](src/sign_extend_tb.vhd)
   * [`limen_alpha_basys2.vhd`](impl/basys2/src/limen_alpha_basys2.vhd)
 * create documentation files (also transfer the old ones)
