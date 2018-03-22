@@ -74,7 +74,8 @@ architecture rtl of core is
     signal rf_i_x_index : std_logic_vector(2 downto 0);
     signal rf_o_x_data  : std_logic_vector(15 downto 0);
 
-    signal se_data_out : std_logic_vector(15 downto 0);
+    -- sign_extend_0 ports
+    signal se_o_data : std_logic_vector(15 downto 0);
 
     signal alu_operation_reg : std_logic_vector(3 downto 0);
     signal alu_sub_add_reg   : std_logic;
@@ -194,10 +195,10 @@ begin
 
     sign_extend_0 : entity work.sign_extend(rtl)
         port map (
-            opcode   => opcode,
-            data_in  => ir_reg(12 downto 3),
-            data_out => se_data_out
-            );
+            i_opcode => opcode,
+            i_data   => ir_reg(12 downto 3),
+            o_data   => se_o_data
+        );
 
     alu_0 : entity work.alu(rtl)
         port map (
@@ -223,7 +224,7 @@ begin
                           else rf_o_y_data;
 
     inst_alu_operand_r <= rf_o_x_data when opcode = c_OPCODE_ALREG
-                          else se_data_out;
+                          else se_o_data;
 
     jmp_tester_0 : entity work.jmp_tester(rtl)
         port map (

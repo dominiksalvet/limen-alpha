@@ -16,29 +16,30 @@ use work.core_public.all; -- core_public.vhd
 
 entity sign_extend is
     port (
-        opcode   : in  std_logic_vector(2 downto 0);
-        data_in  : in  std_logic_vector(9 downto 0);
-        data_out : out std_logic_vector(15 downto 0)
-        );
+        i_opcode : in  std_logic_vector(2 downto 0);
+        i_data   : in  std_logic_vector(9 downto 0);
+        o_data   : out std_logic_vector(15 downto 0)
+    );
 end entity sign_extend;
 
 
 architecture rtl of sign_extend is
-
-    signal high_low : std_logic_vector(15 downto 0);
-
+    
+    signal w_extended_unsigned_data : std_logic_vector(15 downto 0);
+    
 begin
-
-    high_low <= data_in(9 downto 2) & (7 downto 0 => '0') when data_in(0) = '1'
-                else (7 downto 0 => '0') & data_in(9 downto 2);
-
-    with opcode select data_out <=
-        (11 downto 0 => '0') & data_in(6 downto 3)        when c_OPCODE_LIMM,
-        high_low                                          when c_OPCODE_LDIMM,
-        (8 downto 0  => data_in(9)) & data_in(9 downto 3) when c_OPCODE_CJSIMM,
-        (5 downto 0  => data_in(9)) & data_in(9 downto 0) when c_OPCODE_JSIMM,
-        (11 downto 0 => data_in(7)) & data_in(6 downto 3) when others;
-
+    
+    w_extended_unsigned_data <= 
+        i_data(9 downto 2) & (7 downto 0 => '0') when i_data(0) = '1' else
+        (7 downto 0                      => '0') & i_data(9 downto 2);
+    
+    with i_opcode select o_data <= 
+        (11 downto 0 => '0') & i_data(6 downto 3)       when c_OPCODE_LIMM,
+        w_extended_unsigned_data                        when c_OPCODE_LDIMM,
+        (8 downto 0  => i_data(9)) & i_data(9 downto 3) when c_OPCODE_CJSIMM,
+        (5 downto 0  => i_data(9)) & i_data(9 downto 0) when c_OPCODE_JSIMM,
+        (11 downto 0 => i_data(7)) & i_data(6 downto 3) when others;
+    
 end architecture rtl;
 
 

@@ -19,36 +19,35 @@ end entity sign_extend_tb;
 architecture behavior of sign_extend_tb is
     
     -- uut ports
-    signal opcode   : std_logic_vector(2 downto 0) := (others => '0');
-    signal data_in  : std_logic_vector(9 downto 0) := (others => '0');
-    signal data_out : std_logic_vector(15 downto 0);
+    signal i_opcode : std_logic_vector(2 downto 0) := (others => '0');
+    signal i_data   : std_logic_vector(9 downto 0) := (others => '0');
+    signal o_data   : std_logic_vector(15 downto 0);
     
     -- clock period definition
-    constant CLK_PERIOD : time := 10 ns;
+    constant c_CLK_PERIOD : time := 10 ns;
     
 begin
     
     -- instantiate the unit under test (uut)
     uut : entity work.sign_extend(rtl)
         port map (
-            opcode   => opcode,
-            data_in  => data_in,
-            data_out => data_out
+            i_opcode => i_opcode,
+            i_data   => i_data,
+            o_data   => o_data
         );
     
-    -- Purpose: Stimulus process.
-    stim_proc : process
+    stimulus : process is
     begin
         
-        data_in <= "1010101010";
-        wait for CLK_PERIOD;
+        i_data <= "1010101010";
+        wait for c_CLK_PERIOD;
         
         loop
-            inst_form <= std_logic_vector(unsigned(inst_form) + 1);
-            wait for CLK_PERIOD;
+            i_opcode <= std_logic_vector(unsigned(i_opcode) + 1);
+            wait for c_CLK_PERIOD;
         end loop;
         
-    end process;
+    end process stimulus;
     
 end architecture behavior;
 
