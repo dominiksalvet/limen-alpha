@@ -1,28 +1,18 @@
---------------------------------------------------------------------------------
--- Standard: VHDL-1993
--- Platform: independent
---------------------------------------------------------------------------------
--- Description:
---------------------------------------------------------------------------------
--- Notes:
---------------------------------------------------------------------------------
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 
 
 package jmp_tester_interf is
-
-    constant JMP_NEVER  : std_logic_vector(2 downto 0) := "000";
-    constant JMP_ALWAYS : std_logic_vector(2 downto 0) := "001";
-    constant JMP_NE     : std_logic_vector(2 downto 0) := "010";
-    constant JMP_E      : std_logic_vector(2 downto 0) := "011";
-    constant JMP_L      : std_logic_vector(2 downto 0) := "100";
-    constant JMP_LE     : std_logic_vector(2 downto 0) := "101";
-    constant JMP_G      : std_logic_vector(2 downto 0) := "110";
-    constant JMP_GE     : std_logic_vector(2 downto 0) := "111";
-
+    
+    constant c_JMP_NEVER  : std_logic_vector(2 downto 0) := "000";
+    constant c_JMP_ALWAYS : std_logic_vector(2 downto 0) := "001";
+    constant c_JMP_NE     : std_logic_vector(2 downto 0) := "010";
+    constant c_JMP_E      : std_logic_vector(2 downto 0) := "011";
+    constant c_JMP_L      : std_logic_vector(2 downto 0) := "100";
+    constant c_JMP_LE     : std_logic_vector(2 downto 0) := "101";
+    constant c_JMP_G      : std_logic_vector(2 downto 0) := "110";
+    constant c_JMP_GE     : std_logic_vector(2 downto 0) := "111";
+    
 end package jmp_tester_interf;
 
 

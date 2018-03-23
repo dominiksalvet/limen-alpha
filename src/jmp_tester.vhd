@@ -16,36 +16,35 @@ use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
 
 entity jmp_tester is
     port (
-        jmp_type  : in  std_logic_vector(2 downto 0);
-        test_data : in  std_logic_vector(15 downto 0);
-        jmp_ack   : out std_logic
-        );
+        i_jmp_type  : in  std_logic_vector(2 downto 0);
+        i_test_data : in  std_logic_vector(15 downto 0);
+        o_jmp_ack   : out std_logic
+    );
 end entity jmp_tester;
 
 
 architecture rtl of jmp_tester is
-
-    signal equal_zero : std_logic;
-    signal less_zero  : std_logic;
-
+    
+    signal w_equal_zero : std_logic;
+    signal w_less_zero  : std_logic;
+    
 begin
-
-    equal_zero <= '1' when test_data = (15 downto 0 => '0')
-                  else '0';
-
-    less_zero <= test_data(15);
-
-    with jmp_type select jmp_ack <=
-        '0'                              when JMP_NEVER,
-        '1'                              when JMP_ALWAYS,
-        not equal_zero                   when JMP_NE,
-        equal_zero                       when JMP_E,
-        less_zero                        when JMP_L,
-        less_zero or equal_zero          when JMP_LE,
-        not less_zero and not equal_zero when JMP_G,
-        not less_zero                    when JMP_GE,
-        'X'                              when others;
-
+    
+    w_equal_zero <= '1' when i_test_data = (15 downto 0 => '0') else '0';
+    
+    w_less_zero <= i_test_data(15);
+    
+    with i_jmp_type select o_jmp_ack <= 
+        '0'                                  when c_JMP_NEVER,
+        '1'                                  when c_JMP_ALWAYS,
+        not w_equal_zero                     when c_JMP_NE,
+        w_equal_zero                         when c_JMP_E,
+        w_less_zero                          when c_JMP_L,
+        w_less_zero or w_equal_zero          when c_JMP_LE,
+        not w_less_zero and not w_equal_zero when c_JMP_G,
+        not w_less_zero                      when c_JMP_GE,
+        'X'                                  when others;
+    
 end architecture rtl;
 
 

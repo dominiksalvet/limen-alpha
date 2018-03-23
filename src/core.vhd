@@ -82,15 +82,16 @@ architecture rtl of core is
     signal alu_i_sub_add   : std_logic;
     signal alu_i_operand_l : std_logic_vector(15 downto 0);
     signal alu_i_operand_r : std_logic_vector(15 downto 0);
-    signal alu_o_result        : std_logic_vector(15 downto 0);
+    signal alu_o_result    : std_logic_vector(15 downto 0);
 
     signal inst_alu_operation : std_logic_vector(3 downto 0);
     signal inst_alu_operand_l : std_logic_vector(15 downto 0);
     signal inst_alu_operand_r : std_logic_vector(15 downto 0);
 
-    signal jt_jmp_type_reg  : std_logic_vector(2 downto 0);
-    signal jt_test_data_reg : std_logic_vector(15 downto 0);
-    signal jt_jmp_ack       : std_logic;
+    -- jmp_tester_0 ports
+    signal jt_i_jmp_type  : std_logic_vector(2 downto 0);
+    signal jt_i_test_data : std_logic_vector(15 downto 0);
+    signal jt_o_jmp_ack       : std_logic;
 
     signal clk_phase  : std_logic_vector(1 downto 0);
     signal sync_phase : std_logic_vector(1 downto 0);
@@ -229,15 +230,15 @@ begin
 
     jmp_tester_0 : entity work.jmp_tester(rtl)
         port map (
-            jmp_type  => jt_jmp_type_reg,
-            test_data => jt_test_data_reg,
-            jmp_ack   => jt_jmp_ack
-            );
+            i_jmp_type  => jt_i_jmp_type,
+            i_test_data => jt_i_test_data,
+            o_jmp_ack   => jt_o_jmp_ack
+        );
 
     alu_mem_en <= '1' when clk_phase = CLK_PHASE_0
                   else '0';
 
-    next_ip <= inc_ip_reg when jt_jmp_ack = '0'
+    next_ip <= inc_ip_reg when jt_o_jmp_ack = '0'
                else alu_o_result;
 
     sync_phase <= CLK_PHASE_1 when mem_excl = '1'
@@ -265,11 +266,11 @@ begin
     begin
         if (rising_edge(clk)) then
             if (rst = '1') then
-                clk_phase       <= CLK_PHASE_0;
-                ir_reg          <= c_INST_NOP;
-                inc_ip_reg      <= IP_REG_RST;
-                msr_reg         <= REG_MSR_RST;
-                jt_jmp_type_reg <= JMP_NEVER;
+                clk_phase     <= CLK_PHASE_0;
+                ir_reg        <= c_INST_NOP;
+                inc_ip_reg    <= IP_REG_RST;
+                msr_reg       <= REG_MSR_RST;
+                jt_i_jmp_type <= c_JMP_NEVER;
             else
 
                 case clk_phase is
@@ -281,12 +282,12 @@ begin
                 end case;
 
                 case opcode is
-                    when c_OPCODE_CJSIMM                => jt_jmp_type_reg <= ir_reg(2 downto 0);
-                    when c_OPCODE_JSIMM | c_OPCODE_JREG => jt_jmp_type_reg <= JMP_ALWAYS;
-                    when others                         => jt_jmp_type_reg <= JMP_NEVER;
+                    when c_OPCODE_CJSIMM                => jt_i_jmp_type <= ir_reg(2 downto 0);
+                    when c_OPCODE_JSIMM | c_OPCODE_JREG => jt_i_jmp_type <= c_JMP_ALWAYS;
+                    when others                         => jt_i_jmp_type <= c_JMP_NEVER;
                 end case;
 
-                jt_test_data_reg <= rf_o_y_data;
+                jt_i_test_data <= rf_o_y_data;
 
                 if ((clk_phase = CLK_PHASE_0 or clk_phase = CLK_PHASE_1) and mem_excl = '1') then
                     alu_i_operation <= c_ALU_ADD;
