@@ -7,8 +7,6 @@ Currently I am intensively working on this project transition to format I am usi
 ## TODO list:
 * remaster the following source files (first iteration - everything except advanced optimization and commenting):
   * [`core.vhd`](src/core.vhd)
-  * [`jmp_tester.vhd`](src/jmp_tester.vhd) + [`jmp_tester_tb.vhd`](src/jmp_tester_tb.vhd)
-  * [`jmp_tester_interf.vhd`](src/jmp_tester_interf.vhd)
   * [`limen_alpha.vhd`](src/limen_alpha.vhd)
   * [`limen_alpha_basys2.vhd`](impl/basys2/src/limen_alpha_basys2.vhd)
 * transfer more simulation files (`core_tb.vhd`, `limen_alpha_tb.vhd`)
