@@ -1,36 +1,26 @@
---------------------------------------------------------------------------------
--- Standard: VHDL-1993
--- Platform: independent
---------------------------------------------------------------------------------
--- Description:
---------------------------------------------------------------------------------
--- Notes:
---------------------------------------------------------------------------------
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 
 
 package alu_interf is
-
-    constant ALU_OR   : std_logic_vector(3 downto 0) := "0000";
-    constant ALU_ORN  : std_logic_vector(3 downto 0) := "0001";
-    constant ALU_AND  : std_logic_vector(3 downto 0) := "0010";
-    constant ALU_ANDN : std_logic_vector(3 downto 0) := "0011";
-    constant ALU_XOR  : std_logic_vector(3 downto 0) := "0100";
-    constant ALU_SLL  : std_logic_vector(3 downto 0) := "0101";
-    constant ALU_SRL  : std_logic_vector(3 downto 0) := "0110";
-    constant ALU_SRA  : std_logic_vector(3 downto 0) := "0111";
-    constant ALU_SLU  : std_logic_vector(3 downto 0) := "1000";
-    constant ALU_SL   : std_logic_vector(3 downto 0) := "1001";
-    constant ALU_SUB  : std_logic_vector(3 downto 0) := "1010";
-    constant ALU_ADD  : std_logic_vector(3 downto 0) := "1011";
-    constant ALU_L    : std_logic_vector(3 downto 0) := "1100";
-    constant ALU_R    : std_logic_vector(3 downto 0) := "1101";
-    constant ALU_LR   : std_logic_vector(3 downto 0) := "1110";
-    constant ALU_RL   : std_logic_vector(3 downto 0) := "1111";
-
+    
+    constant c_ALU_OR   : std_logic_vector(3 downto 0) := "0000";
+    constant c_ALU_ORN  : std_logic_vector(3 downto 0) := "0001";
+    constant c_ALU_AND  : std_logic_vector(3 downto 0) := "0010";
+    constant c_ALU_ANDN : std_logic_vector(3 downto 0) := "0011";
+    constant c_ALU_XOR  : std_logic_vector(3 downto 0) := "0100";
+    constant c_ALU_SLL  : std_logic_vector(3 downto 0) := "0101";
+    constant c_ALU_SRL  : std_logic_vector(3 downto 0) := "0110";
+    constant c_ALU_SRA  : std_logic_vector(3 downto 0) := "0111";
+    constant c_ALU_SLU  : std_logic_vector(3 downto 0) := "1000";
+    constant c_ALU_SL   : std_logic_vector(3 downto 0) := "1001";
+    constant c_ALU_SUB  : std_logic_vector(3 downto 0) := "1010";
+    constant c_ALU_ADD  : std_logic_vector(3 downto 0) := "1011";
+    constant c_ALU_L    : std_logic_vector(3 downto 0) := "1100";
+    constant c_ALU_R    : std_logic_vector(3 downto 0) := "1101";
+    constant c_ALU_LR   : std_logic_vector(3 downto 0) := "1110";
+    constant c_ALU_RL   : std_logic_vector(3 downto 0) := "1111";
+    
 end package alu_interf;
 
 

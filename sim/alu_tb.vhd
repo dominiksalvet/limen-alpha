@@ -19,11 +19,11 @@ end entity alu_tb;
 architecture behavior of alu_tb is
     
     -- uut ports
-    signal operation : std_logic_vector(3 downto 0)  := (others => '0');
-    signal sub_add   : std_logic                     := '0';
-    signal operand_l : std_logic_vector(15 downto 0) := (others => '0');
-    signal operand_r : std_logic_vector(15 downto 0) := (others => '0');
-    signal result    : std_logic_vector(15 downto 0);
+    signal i_operation : std_logic_vector(3 downto 0)  := (others => '0');
+    signal i_sub_add   : std_logic                     := '0';
+    signal i_operand_l : std_logic_vector(15 downto 0) := (others => '0');
+    signal i_operand_r : std_logic_vector(15 downto 0) := (others => '0');
+    signal o_result    : std_logic_vector(15 downto 0);
     
     -- clock period definition
     constant CLK_PERIOD : time := 10 ns;
@@ -33,36 +33,35 @@ begin
     -- instantiate the unit under test (uut)
     uut : entity work.alu(rtl)
         port map (
-            operation => operation,
-            sub_add   => sub_add,
-            operand_l => operand_l,
-            operand_r => operand_r,
-            result    => result
+            i_operation => i_operation,
+            i_sub_add   => i_sub_add,
+            i_operand_l => i_operand_l,
+            i_operand_r => i_operand_r,
+            o_result    => o_result
         );
     
-    -- Purpose: Stimulus process.
-    stim_proc : process
+    stimulus : process is
     begin
         
-        op_code   <= ALU_OR;
-        operand_l <= "1100110011001100";
-        operand_r <= "0011001100110011";
+        i_operation <= c_ALU_OR;
+        i_operand_l <= "1100110011001100";
+        i_operand_r <= "0011001100110011";
         wait for CLK_PERIOD;
         
-        op_code   <= ALU_ADD;
-        operand_l <= std_logic_vector(to_signed(52, operand_l'length));
-        operand_r <= std_logic_vector(to_signed(76, operand_r'length));
+        i_operation <= c_ALU_ADD;
+        i_operand_l <= std_logic_vector(to_signed(52, i_operand_l'length));
+        i_operand_r <= std_logic_vector(to_signed(76, i_operand_r'length));
         wait for CLK_PERIOD;
         
-        operand_r <= std_logic_vector(to_signed(-51, operand_r'length));
+        i_operand_r <= std_logic_vector(to_signed(-51, i_operand_r'length));
         wait for CLK_PERIOD;
         
-        operand_l <= (others => '1');
-        operand_r <= (others => '0');
-        op_code   <= ALU_RL;
+        i_operand_l <= (others => '1');
+        i_operand_r <= (others => '0');
+        i_operation <= c_ALU_RL;
         wait;
         
-    end process stim_proc;
+    end process stimulus;
     
 end architecture behavior;
 

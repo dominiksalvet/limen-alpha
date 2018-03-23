@@ -77,11 +77,12 @@ architecture rtl of core is
     -- sign_extend_0 ports
     signal se_o_data : std_logic_vector(15 downto 0);
 
-    signal alu_operation_reg : std_logic_vector(3 downto 0);
-    signal alu_sub_add_reg   : std_logic;
-    signal alu_operand_l_reg : std_logic_vector(15 downto 0);
-    signal alu_operand_r_reg : std_logic_vector(15 downto 0);
-    signal alu_result        : std_logic_vector(15 downto 0);
+    -- alu_0 ports
+    signal alu_i_operation : std_logic_vector(3 downto 0);
+    signal alu_i_sub_add   : std_logic;
+    signal alu_i_operand_l : std_logic_vector(15 downto 0);
+    signal alu_i_operand_r : std_logic_vector(15 downto 0);
+    signal alu_o_result        : std_logic_vector(15 downto 0);
 
     signal inst_alu_operation : std_logic_vector(3 downto 0);
     signal inst_alu_operand_l : std_logic_vector(15 downto 0);
@@ -152,7 +153,7 @@ begin
               else '0';
 
     mem_addr <= ip_reg when alu_mem_en = '0'
-                else alu_result;
+                else alu_o_result;
 
     mem_out <= rf_o_x_data;
 
@@ -202,23 +203,23 @@ begin
 
     alu_0 : entity work.alu(rtl)
         port map (
-            operation => alu_operation_reg,
-            sub_add   => alu_sub_add_reg,
-            operand_l => alu_operand_l_reg,
-            operand_r => alu_operand_r_reg,
-            result    => alu_result
-            );
+            i_operation => alu_i_operation,
+            i_sub_add   => alu_i_sub_add,
+            i_operand_l => alu_i_operand_l,
+            i_operand_r => alu_i_operand_r,
+            o_result    => alu_o_result
+        );
 
-    alu_ldimm_opc <= ALU_R when ir_reg(4) = '0'
+    alu_ldimm_opc <= c_ALU_R when ir_reg(4) = '0'
                      else "111" & ir_reg(3);
 
     with opcode select inst_alu_operation <=
         ir_reg(12 downto 9)         when c_OPCODE_ALREG,
         '0' & ir_reg(12 downto 10)  when c_OPCODE_LIMM,
         "10" & ir_reg(12 downto 11) when c_OPCODE_ASIMM,
-        ALU_L                       when c_OPCODE_JREG,
+        c_ALU_L                     when c_OPCODE_JREG,
         alu_ldimm_opc               when c_OPCODE_LDIMM,
-        ALU_ADD                     when others;
+        c_ALU_ADD                   when others;
 
     inst_alu_operand_l <= ip_reg when opcode = c_OPCODE_CJSIMM or opcode = c_OPCODE_JSIMM
                           else rf_o_y_data;
@@ -237,7 +238,7 @@ begin
                   else '0';
 
     next_ip <= inc_ip_reg when jt_jmp_ack = '0'
-               else alu_result;
+               else alu_o_result;
 
     sync_phase <= CLK_PHASE_1 when mem_excl = '1'
                   else CLK_PHASE_0;
@@ -288,20 +289,20 @@ begin
                 jt_test_data_reg <= rf_o_y_data;
 
                 if ((clk_phase = CLK_PHASE_0 or clk_phase = CLK_PHASE_1) and mem_excl = '1') then
-                    alu_operation_reg <= ALU_ADD;
-                    alu_sub_add_reg   <= '0';
-                    alu_operand_l_reg <= ip_reg;
-                    alu_operand_r_reg <= std_logic_vector(to_signed(1, alu_operand_r_reg'length));
+                    alu_i_operation <= c_ALU_ADD;
+                    alu_i_sub_add   <= '0';
+                    alu_i_operand_l <= ip_reg;
+                    alu_i_operand_r <= std_logic_vector(to_signed(1, alu_i_operand_r'length));
                 else
-                    alu_operation_reg <= inst_alu_operation;
-                    alu_sub_add_reg   <= (inst_alu_operation(3) and not inst_alu_operation(2)) and
+                    alu_i_operation <= inst_alu_operation;
+                    alu_i_sub_add   <= (inst_alu_operation(3) and not inst_alu_operation(2)) and
                                          not (inst_alu_operation(1) and inst_alu_operation(0));
-                    alu_operand_l_reg <= inst_alu_operand_l;
-                    alu_operand_r_reg <= inst_alu_operand_r;
+                    alu_i_operand_l <= inst_alu_operand_l;
+                    alu_i_operand_r <= inst_alu_operand_r;
                 end if;
 
                 if (clk_phase = CLK_PHASE_0 and mem_excl = '1') then
-                    alu_result_reg <= alu_result;
+                    alu_result_reg <= alu_o_result;
 
                     case c_reg_index is
                         when REG_MSR  => c_reg_d_out <= msr_reg;
@@ -329,7 +330,7 @@ begin
 
                 if (clk_phase = CLK_PHASE_2) then
                     ir_reg     <= mem_in;
-                    inc_ip_reg <= alu_result;
+                    inc_ip_reg <= alu_o_result;
                 end if;
 
             end if;

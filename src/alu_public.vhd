@@ -1,85 +1,60 @@
---------------------------------------------------------------------------------
--- Standard: VHDL-1993
--- Platform: independent
---------------------------------------------------------------------------------
--- Description:
---------------------------------------------------------------------------------
--- Notes:
---------------------------------------------------------------------------------
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 
 package alu_public is
-
+    
     function logic_shift_left (
-        operand_a : std_logic_vector;
-        operand_b : std_logic_vector
-        )
-        return std_logic_vector;
-
+            p_A : std_logic_vector;
+            p_B : std_logic_vector
+        ) return std_logic_vector;
+    
     function logic_shift_right (
-        operand_a : std_logic_vector;
-        operand_b : std_logic_vector
-        )
-        return std_logic_vector;
-
+            p_A : std_logic_vector;
+            p_B : std_logic_vector
+        ) return std_logic_vector;
+    
     function arith_shift_right (
-        operand_a : std_logic_vector;
-        operand_b : std_logic_vector
-        )
-        return std_logic_vector;
-
+            p_A : std_logic_vector;
+            p_B : std_logic_vector
+        ) return std_logic_vector;
+    
 end package alu_public;
 
 
 package body alu_public is
-
+    
     function logic_shift_left (
-        operand_a : std_logic_vector;
-        operand_b : std_logic_vector
-        )
-        return std_logic_vector is
+            p_A : std_logic_vector;
+            p_B : std_logic_vector
+        ) return std_logic_vector is
     begin
         return std_logic_vector(
-            shift_left(
-                unsigned(operand_a),
-                to_integer(unsigned(operand_b))
-                )
+            shift_left(unsigned(p_A), to_integer(unsigned(p_B)))
             );
     end function logic_shift_left;
-
+    
     function logic_shift_right (
-        operand_a : std_logic_vector;
-        operand_b : std_logic_vector
-        )
-        return std_logic_vector is
+            p_A : std_logic_vector;
+            p_B : std_logic_vector
+        ) return std_logic_vector is
     begin
         return std_logic_vector(
-            shift_right(
-                unsigned(operand_a),
-                to_integer(unsigned(operand_b))
-                )
+            shift_right(unsigned(p_A), to_integer(unsigned(p_B)))
             );
     end function logic_shift_right;
-
+    
     function arith_shift_right (
-        operand_a : std_logic_vector;
-        operand_b : std_logic_vector
-        )
-        return std_logic_vector is
+            p_A : std_logic_vector;
+            p_B : std_logic_vector
+        ) return std_logic_vector is
     begin
         return std_logic_vector(
-            shift_right(
-                signed(operand_a),
-                to_integer(unsigned(operand_b))
-                )
+            shift_right(signed(p_A), to_integer(unsigned(p_B)))
             );
     end function arith_shift_right;
-
+    
 end package body alu_public;
 
 
