@@ -1,4 +1,4 @@
-# Limen Alpha
+# Limen Alpha Processor
 
 Limen Alpha is dual-core 16-bit RISC processor architecture with hardware synchronization support between the cores. This repository includes it's implementation as a softcore processor described in VHDL. Currently a lot of the code is in it's original form, written 3 years ago and then used as part of my high school final work.
 
