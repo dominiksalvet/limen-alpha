@@ -41,21 +41,21 @@ begin
     stim_proc : process
     begin
         
-        cond_type <= JMP_NEVER;
+        jmp_type  <= JMP_NEVER;
         test_data <= std_logic_vector(to_signed(5, test_data'length));
         wait for CLK_PERIOD;
         
-        cond_type <= JMP_GE;
+        jmp_type <= JMP_GE;
         wait for CLK_PERIOD;
         
         test_data <= std_logic_vector(to_signed(0, test_data'length));
         wait for CLK_PERIOD;
         
-        cond_type <= JMP_G;
+        jmp_type <= JMP_G;
         wait for CLK_PERIOD;
         
         test_data <= std_logic_vector(to_signed(-20, test_data'length));
-        cond_type <= JMP_L;
+        jmp_type  <= JMP_L;
         wait for CLK_PERIOD;
         
         test_data <= (others => '0');

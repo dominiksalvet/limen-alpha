@@ -29,7 +29,7 @@ architecture behavior of ram_tb is
     constant g_ADDR_WIDTH : positive := 4;
     constant g_DATA_WIDTH : positive := 8;
     
-    constant g_MEM_IMG_FILENAME : string := "mem_img/linear_4_8.txt";
+    constant g_MEM_IMG_FILENAME : string := "../sim/mem_img/linear_4_8.txt";
     
     -- uut ports
     signal i_clk : std_logic := '0';

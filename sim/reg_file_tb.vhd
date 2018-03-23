@@ -66,7 +66,7 @@ begin
             i_x_index <= std_logic_vector(unsigned(i_y_index) + 5);
             
             if (i_z_index = c_REG_R0) then
-                z_wr_en <= not z_wr_en;
+                i_z_we <= not i_z_we;
             end if;
         end loop;
     end process stimulus;
