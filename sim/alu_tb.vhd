@@ -26,7 +26,7 @@ architecture behavior of alu_tb is
     signal o_result    : std_logic_vector(15 downto 0);
     
     -- clock period definition
-    constant CLK_PERIOD : time := 10 ns;
+    constant c_CLK_PERIOD : time := 10 ns;
     
 begin
     
@@ -46,15 +46,15 @@ begin
         i_operation <= c_ALU_OR;
         i_operand_l <= "1100110011001100";
         i_operand_r <= "0011001100110011";
-        wait for CLK_PERIOD;
+        wait for c_CLK_PERIOD;
         
         i_operation <= c_ALU_ADD;
         i_operand_l <= std_logic_vector(to_signed(52, i_operand_l'length));
         i_operand_r <= std_logic_vector(to_signed(76, i_operand_r'length));
-        wait for CLK_PERIOD;
+        wait for c_CLK_PERIOD;
         
         i_operand_r <= std_logic_vector(to_signed(-51, i_operand_r'length));
-        wait for CLK_PERIOD;
+        wait for c_CLK_PERIOD;
         
         i_operand_l <= (others => '1');
         i_operand_r <= (others => '0');
