@@ -12,6 +12,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.limen_alpha_public.all; -- limen_alpha_public.vhd
+
 use work.core; -- core.vhd
 
 
@@ -31,14 +33,6 @@ end entity limen_alpha;
 
 
 architecture rtl of limen_alpha is
-
-    constant CORE_0_INT_ADDR   : std_logic_vector(15 downto 0) := x"0004";
-    constant CORE_0_IP_REG_RST : std_logic_vector(15 downto 0) := x"0000";
-    constant CORE_0_PRNG_SEED  : std_logic_vector(15 downto 0) := x"ffff";
-
-    constant CORE_1_INT_ADDR   : std_logic_vector(15 downto 0) := x"000c";
-    constant CORE_1_IP_REG_RST : std_logic_vector(15 downto 0) := x"0008";
-    constant CORE_1_PRNG_SEED  : std_logic_vector(15 downto 0) := x"ddd4";
 
     signal core_sync_ack : std_logic;
     signal core_sync_req : std_logic;
