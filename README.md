@@ -7,9 +7,8 @@ Currently I am intensively working on this project transition to format I am usi
 ## TODO list:
 * remaster the following source files (first iteration - everything except advanced optimization and commenting):
   * [`core.vhd`](src/core.vhd) + [`core_tb.vhd`](sim/core_tb.vhd)
-  * [`limen_alpha.vhd`](src/limen_alpha.vhd)
+  * [`limen_alpha.vhd`](src/limen_alpha.vhd) + [`limen_alpha_tb.vhd`](sim/limen_alpha_tb.vhd)
   * [`limen_alpha_basys2.vhd`](impl/basys2/src/limen_alpha_basys2.vhd)
-* transfer more simulation files (`limen_alpha_tb.vhd`)
 * create documentation files (also transfer the old ones)
 * transfer common software for the processor
 * create testing software for the basys2 implementation
