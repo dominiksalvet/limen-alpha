@@ -126,22 +126,22 @@ begin
 
     opcode <= ir_reg(15 downto 13);
 
-    ll_inst_dec <= '1' when opcode = c_OPCODE_TSIMM and ir_reg(12 downto 11) = "00"
+    ll_inst_dec <= '1' when opcode = c_OPCODE_TSI and ir_reg(12 downto 11) = "00"
                    else '0';
 
-    ld_inst_dec <= '1' when opcode = c_OPCODE_TSIMM and ir_reg(12 downto 11) = "01"
+    ld_inst_dec <= '1' when opcode = c_OPCODE_TSI and ir_reg(12 downto 11) = "01"
                    else '0';
 
-    sc_inst_dec <= '1' when opcode = c_OPCODE_TSIMM and ir_reg(12 downto 11) = "10"
+    sc_inst_dec <= '1' when opcode = c_OPCODE_TSI and ir_reg(12 downto 11) = "10"
                    else '0';
 
-    st_inst_dec <= '1' when opcode = c_OPCODE_TSIMM and ir_reg(12 downto 11) = "11"
+    st_inst_dec <= '1' when opcode = c_OPCODE_TSI and ir_reg(12 downto 11) = "11"
                    else '0';
 
-    rtc_inst_dec <= '1' when opcode = c_OPCODE_ALREG and ir_reg(12 downto 9) = "1110"
+    rtc_inst_dec <= '1' when opcode = c_OPCODE_ALC and ir_reg(12 downto 9) = "1110"
                     else '0';
 
-    ctr_inst_dec <= '1' when opcode = c_OPCODE_ALREG and ir_reg(12 downto 9) = "1111"
+    ctr_inst_dec <= '1' when opcode = c_OPCODE_ALC and ir_reg(12 downto 9) = "1111"
                     else '0';
 
     mem_yield <= '1' when clk_phase = CLK_PHASE_1
@@ -180,16 +180,16 @@ begin
     rf_i_z_we <= '1' when clk_phase = CLK_PHASE_1
                  else '0';
 
-    rf_i_z_index <= c_REG_R0 when st_inst_dec = '1' or opcode = c_OPCODE_CJSIMM
+    rf_i_z_index <= c_REG_R0 when st_inst_dec = '1' or opcode = c_OPCODE_CJSI
                     else ir_reg(2 downto 0);
 
     rf_i_z_data <= (14 downto 0 => '0') & sync_ack when sc_inst_dec = '1' else
                    mem_in      when ld_inst_dec = '1' or ll_inst_dec = '1' else
-                   inc_ip_reg  when opcode = c_OPCODE_JSIMM or opcode = c_OPCODE_JREG else
+                   inc_ip_reg  when opcode = c_OPCODE_JSI or opcode = c_OPCODE_J else
                    c_reg_d_out when ctr_inst_dec = '1'
                    else alu_result_reg;
 
-    rf_i_y_index <= ir_reg(2 downto 0) when opcode = c_OPCODE_LDIMM
+    rf_i_y_index <= ir_reg(2 downto 0) when opcode = c_OPCODE_LDI
                     else ir_reg(5 downto 3);
 
     rf_i_x_index <= ir_reg(2 downto 0) when st_inst_dec = '1' or sc_inst_dec = '1'
@@ -215,17 +215,17 @@ begin
                      else "111" & ir_reg(3);
 
     with opcode select inst_alu_operation <=
-        ir_reg(12 downto 9)         when c_OPCODE_ALREG,
-        '0' & ir_reg(12 downto 10)  when c_OPCODE_LIMM,
-        "10" & ir_reg(12 downto 11) when c_OPCODE_ASIMM,
-        c_ALU_L                     when c_OPCODE_JREG,
-        alu_ldimm_opc               when c_OPCODE_LDIMM,
+        ir_reg(12 downto 9)         when c_OPCODE_ALC,
+        '0' & ir_reg(12 downto 10)  when c_OPCODE_LI,
+        "10" & ir_reg(12 downto 11) when c_OPCODE_ASI,
+        c_ALU_L                     when c_OPCODE_J,
+        alu_ldimm_opc               when c_OPCODE_LDI,
         c_ALU_ADD                   when others;
 
-    inst_alu_operand_l <= ip_reg when opcode = c_OPCODE_CJSIMM or opcode = c_OPCODE_JSIMM
+    inst_alu_operand_l <= ip_reg when opcode = c_OPCODE_CJSI or opcode = c_OPCODE_JSI
                           else rf_o_y_data;
 
-    inst_alu_operand_r <= rf_o_x_data when opcode = c_OPCODE_ALREG
+    inst_alu_operand_r <= rf_o_x_data when opcode = c_OPCODE_ALC
                           else se_o_data;
 
     jmp_tester_0 : entity work.jmp_tester(rtl)
@@ -282,8 +282,8 @@ begin
                 end case;
 
                 case opcode is
-                    when c_OPCODE_CJSIMM                => jt_i_jmp_type <= ir_reg(2 downto 0);
-                    when c_OPCODE_JSIMM | c_OPCODE_JREG => jt_i_jmp_type <= c_JMP_ALWAYS;
+                    when c_OPCODE_CJSI                => jt_i_jmp_type <= ir_reg(2 downto 0);
+                    when c_OPCODE_JSI | c_OPCODE_J => jt_i_jmp_type <= c_JMP_ALWAYS;
                     when others                         => jt_i_jmp_type <= c_JMP_NEVER;
                 end case;
 

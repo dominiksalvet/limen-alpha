@@ -4,14 +4,14 @@ use ieee.std_logic_1164.all;
 
 package core_public is
     
-    constant c_OPCODE_ASIMM  : std_logic_vector(2 downto 0) := "000";
-    constant c_OPCODE_TSIMM  : std_logic_vector(2 downto 0) := "001";
-    constant c_OPCODE_LIMM   : std_logic_vector(2 downto 0) := "010";
-    constant c_OPCODE_ALREG  : std_logic_vector(2 downto 0) := "011";
-    constant c_OPCODE_LDIMM  : std_logic_vector(2 downto 0) := "100";
-    constant c_OPCODE_CJSIMM : std_logic_vector(2 downto 0) := "101";
-    constant c_OPCODE_JSIMM  : std_logic_vector(2 downto 0) := "110";
-    constant c_OPCODE_JREG   : std_logic_vector(2 downto 0) := "111";
+    constant c_OPCODE_ASI  : std_logic_vector(2 downto 0) := "000";
+    constant c_OPCODE_TSI  : std_logic_vector(2 downto 0) := "001";
+    constant c_OPCODE_LI   : std_logic_vector(2 downto 0) := "010";
+    constant c_OPCODE_ALC  : std_logic_vector(2 downto 0) := "011";
+    constant c_OPCODE_LDI  : std_logic_vector(2 downto 0) := "100";
+    constant c_OPCODE_CJSI : std_logic_vector(2 downto 0) := "101";
+    constant c_OPCODE_JSI  : std_logic_vector(2 downto 0) := "110";
+    constant c_OPCODE_J    : std_logic_vector(2 downto 0) := "111";
     
     constant c_INST_NOP : std_logic_vector(15 downto 0) := x"6000";
     

@@ -34,10 +34,10 @@ begin
         (7 downto 0 => '0') & i_data(9 downto 2);
     
     with i_opcode select o_data <= 
-        (11 downto 0 => '0') & i_data(6 downto 3)       when c_OPCODE_LIMM,
-        w_extended_unsigned_data                        when c_OPCODE_LDIMM,
-        (8 downto 0  => i_data(9)) & i_data(9 downto 3) when c_OPCODE_CJSIMM,
-        (5 downto 0  => i_data(9)) & i_data(9 downto 0) when c_OPCODE_JSIMM,
+        (11 downto 0 => '0') & i_data(6 downto 3)       when c_OPCODE_LI,
+        w_extended_unsigned_data                        when c_OPCODE_LDI,
+        (8 downto 0  => i_data(9)) & i_data(9 downto 3) when c_OPCODE_CJSI,
+        (5 downto 0  => i_data(9)) & i_data(9 downto 0) when c_OPCODE_JSI,
         (11 downto 0 => i_data(7)) & i_data(6 downto 3) when others;
     
 end architecture rtl;
