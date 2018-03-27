@@ -54,7 +54,7 @@ end entity ram;
 architecture rtl of ram is
     
     -- output buffers
-    signal b_o_data : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    signal b_data : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
     
     -- definition of memory type
     type t_MEM is array(0 to (2 ** g_ADDR_WIDTH) - 1) of
@@ -91,7 +91,7 @@ architecture rtl of ram is
     
 begin
     
-    o_data <= b_o_data;
+    o_data <= b_data;
     
     -- Description:
     --     Memory read and write mechanism description.
@@ -100,7 +100,7 @@ begin
         if (rising_edge(i_clk)) then
             
             if (i_re = '1') then -- read from the memory
-                b_o_data <= r_mem(to_integer(unsigned(i_addr)));
+                b_data <= r_mem(to_integer(unsigned(i_addr)));
             end if;
             
             if (i_we = '1') then -- write to the memory
@@ -132,10 +132,10 @@ begin
         end if;
     end process input_prevention;
     
-    output_prevention : process (b_o_data) is
+    output_prevention : process (b_data) is
     begin
         if (now > 0 ps) then -- the prevention must start after the simulation initialization
-            if (not contains_only_01(b_o_data)) then
+            if (not contains_only_01(b_data)) then
                 report "RAM - undefined output data, the output data are not exactly defined by" &
                 " '0' and '1' values only!" severity error;
             end if;
