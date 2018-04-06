@@ -18,4 +18,10 @@ Currently I am intensively working on this project transition to format I am usi
 
 ## License
 
-This project is licensed under the MIT License, see the [*LICENSE.txt*](LICENSE.txt) file for details.
+This project is licensed under an Open Source Initiative approved license, MIT License. See the [*LICENSE.txt*](LICENSE.txt) file for details.
+
+<p align="center">
+  <a href="http://opensource.org/">
+    <img src="https://opensource.org/files/osi_logo_bold_300X400_90ppi.png" width="100">
+  </a>
+</p>
