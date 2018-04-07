@@ -4,7 +4,7 @@ Limen Alpha is a dual-core 16-bit RISC processor architecture with a hardware sy
 
 Currently I am intensively working on this project transition to format I am using now, see the list below.
 
-## TODO list:
+## To do list:
 * remaster the following source files (the first iteration - code formatting):
   * [*core.vhd*](src/core.vhd) + [*core_tb.vhd*](sim/core_tb.vhd)
   * [*limen_alpha.vhd*](src/limen_alpha.vhd) + [*limen_alpha_tb.vhd*](sim/limen_alpha_tb.vhd)
