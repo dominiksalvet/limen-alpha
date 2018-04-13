@@ -4,16 +4,16 @@ use ieee.std_logic_1164.all;
 
 package core_public is
     
-    constant c_OPCODE_ASI  : std_logic_vector(2 downto 0) := "000";
-    constant c_OPCODE_TSI  : std_logic_vector(2 downto 0) := "001";
-    constant c_OPCODE_LI   : std_logic_vector(2 downto 0) := "010";
-    constant c_OPCODE_ALC  : std_logic_vector(2 downto 0) := "011";
-    constant c_OPCODE_LDI  : std_logic_vector(2 downto 0) := "100";
-    constant c_OPCODE_CJSI : std_logic_vector(2 downto 0) := "101";
-    constant c_OPCODE_JSI  : std_logic_vector(2 downto 0) := "110";
-    constant c_OPCODE_J    : std_logic_vector(2 downto 0) := "111";
+    constant c_OPCODE_ASI  : std_ulogic_vector(2 downto 0) := "000";
+    constant c_OPCODE_TSI  : std_ulogic_vector(2 downto 0) := "001";
+    constant c_OPCODE_LI   : std_ulogic_vector(2 downto 0) := "010";
+    constant c_OPCODE_ALC  : std_ulogic_vector(2 downto 0) := "011";
+    constant c_OPCODE_LDI  : std_ulogic_vector(2 downto 0) := "100";
+    constant c_OPCODE_CJSI : std_ulogic_vector(2 downto 0) := "101";
+    constant c_OPCODE_JSI  : std_ulogic_vector(2 downto 0) := "110";
+    constant c_OPCODE_J    : std_ulogic_vector(2 downto 0) := "111";
     
-    constant c_INST_NOP : std_logic_vector(15 downto 0) := x"6000";
+    constant c_INST_NOP : std_ulogic_vector(15 downto 0) := x"6000";
     
 end package core_public;
 

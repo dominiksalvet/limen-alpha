@@ -20,9 +20,9 @@ end entity jmp_tester_tb;
 architecture behavior of jmp_tester_tb is
     
     -- uut ports
-    signal i_jmp_type  : std_logic_vector(2 downto 0)  := (others => '0');
-    signal i_test_data : std_logic_vector(15 downto 0) := (others => '0');
-    signal o_jmp_ack   : std_logic;
+    signal i_jmp_type  : std_ulogic_vector(2 downto 0)  := (others => '0');
+    signal i_test_data : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal o_jmp_ack   : std_ulogic;
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;
@@ -41,19 +41,19 @@ begin
     begin
         
         i_jmp_type  <= c_JMP_NEVER;
-        i_test_data <= std_logic_vector(to_signed(5, i_test_data'length));
+        i_test_data <= std_ulogic_vector(to_signed(5, i_test_data'length));
         wait for c_CLK_PERIOD;
         
         i_jmp_type <= c_JMP_GE;
         wait for c_CLK_PERIOD;
         
-        i_test_data <= std_logic_vector(to_signed(0, i_test_data'length));
+        i_test_data <= std_ulogic_vector(to_signed(0, i_test_data'length));
         wait for c_CLK_PERIOD;
         
         i_jmp_type <= c_JMP_G;
         wait for c_CLK_PERIOD;
         
-        i_test_data <= std_logic_vector(to_signed(-20, i_test_data'length));
+        i_test_data <= std_ulogic_vector(to_signed(-20, i_test_data'length));
         i_jmp_type  <= c_JMP_L;
         wait for c_CLK_PERIOD;
         

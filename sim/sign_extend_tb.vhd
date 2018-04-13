@@ -19,9 +19,9 @@ end entity sign_extend_tb;
 architecture behavior of sign_extend_tb is
     
     -- uut ports
-    signal i_opcode : std_logic_vector(2 downto 0) := (others => '0');
-    signal i_data   : std_logic_vector(9 downto 0) := (others => '0');
-    signal o_data   : std_logic_vector(15 downto 0);
+    signal i_opcode : std_ulogic_vector(2 downto 0) := (others => '0');
+    signal i_data   : std_ulogic_vector(9 downto 0) := (others => '0');
+    signal o_data   : std_ulogic_vector(15 downto 0);
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;
@@ -43,7 +43,7 @@ begin
         wait for c_CLK_PERIOD;
         
         loop
-            i_opcode <= std_logic_vector(unsigned(i_opcode) + 1);
+            i_opcode <= std_ulogic_vector(unsigned(i_opcode) + 1);
             wait for c_CLK_PERIOD;
         end loop;
         

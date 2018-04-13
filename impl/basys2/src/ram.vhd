@@ -40,13 +40,13 @@ entity ram is
         g_MEM_IMG_FILENAME : string := ""
     );
     port (
-        i_clk : in std_logic; -- clock signal
+        i_clk : in std_ulogic; -- clock signal
         
-        i_we   : in  std_logic; -- write enable
-        i_re   : in  std_logic; -- read enable
-        i_addr : in  std_logic_vector(g_ADDR_WIDTH - 1 downto 0); -- address bus
-        i_data : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0); -- input data bus
-        o_data : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) -- output data bus
+        i_we   : in  std_ulogic; -- write enable
+        i_re   : in  std_ulogic; -- read enable
+        i_addr : in  std_ulogic_vector(g_ADDR_WIDTH - 1 downto 0); -- address bus
+        i_data : in  std_ulogic_vector(g_DATA_WIDTH - 1 downto 0); -- input data bus
+        o_data : out std_ulogic_vector(g_DATA_WIDTH - 1 downto 0) -- output data bus
     );
 end entity ram;
 
@@ -54,11 +54,11 @@ end entity ram;
 architecture rtl of ram is
     
     -- output buffers
-    signal b_data : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    signal b_data : std_ulogic_vector(g_DATA_WIDTH - 1 downto 0);
     
     -- definition of memory type
     type t_MEM is array(0 to (2 ** g_ADDR_WIDTH) - 1) of
-        std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+        std_ulogic_vector(g_DATA_WIDTH - 1 downto 0);
     
     -- Description:
     --     Creates the memory image by loading it from the defined file.
@@ -77,9 +77,9 @@ architecture rtl of ram is
         
         for i in t_MEM'range loop
             readline(v_file, v_line);
-            -- read function from std.textio package does not work with std_logic_vector
+            -- read function from std.textio package does not work with std_ulogic_vector
             read(v_line, v_bit_vector);
-            v_mem(i) := to_stdlogicvector(v_bit_vector); -- cast to std_logic_vector
+            v_mem(i) := to_stdulogicvector(v_bit_vector); -- cast to std_ulogic_vector
         end loop;
         
         file_close(v_file);

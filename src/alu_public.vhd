@@ -6,19 +6,19 @@ use ieee.numeric_std.all;
 package alu_public is
     
     function logic_shift_left (
-            p_A : std_logic_vector;
-            p_B : std_logic_vector
-        ) return std_logic_vector;
+            p_A : std_ulogic_vector;
+            p_B : std_ulogic_vector
+        ) return std_ulogic_vector;
     
     function logic_shift_right (
-            p_A : std_logic_vector;
-            p_B : std_logic_vector
-        ) return std_logic_vector;
+            p_A : std_ulogic_vector;
+            p_B : std_ulogic_vector
+        ) return std_ulogic_vector;
     
     function arith_shift_right (
-            p_A : std_logic_vector;
-            p_B : std_logic_vector
-        ) return std_logic_vector;
+            p_A : std_ulogic_vector;
+            p_B : std_ulogic_vector
+        ) return std_ulogic_vector;
     
 end package alu_public;
 
@@ -26,31 +26,31 @@ end package alu_public;
 package body alu_public is
     
     function logic_shift_left (
-            p_A : std_logic_vector;
-            p_B : std_logic_vector
-        ) return std_logic_vector is
+            p_A : std_ulogic_vector;
+            p_B : std_ulogic_vector
+        ) return std_ulogic_vector is
     begin
-        return std_logic_vector(
+        return std_ulogic_vector(
             shift_left(unsigned(p_A), to_integer(unsigned(p_B)))
             );
     end function logic_shift_left;
     
     function logic_shift_right (
-            p_A : std_logic_vector;
-            p_B : std_logic_vector
-        ) return std_logic_vector is
+            p_A : std_ulogic_vector;
+            p_B : std_ulogic_vector
+        ) return std_ulogic_vector is
     begin
-        return std_logic_vector(
+        return std_ulogic_vector(
             shift_right(unsigned(p_A), to_integer(unsigned(p_B)))
             );
     end function logic_shift_right;
     
     function arith_shift_right (
-            p_A : std_logic_vector;
-            p_B : std_logic_vector
-        ) return std_logic_vector is
+            p_A : std_ulogic_vector;
+            p_B : std_ulogic_vector
+        ) return std_ulogic_vector is
     begin
-        return std_logic_vector(
+        return std_ulogic_vector(
             shift_right(signed(p_A), to_integer(unsigned(p_B)))
             );
     end function arith_shift_right;

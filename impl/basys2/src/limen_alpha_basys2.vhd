@@ -24,21 +24,21 @@ entity limen_alpha_basys2 is
         RWM_ADDR_WIDTH : positive := 8
     );
     port (
-        clk   : in std_logic;
-        rst   : in std_logic;
-        irq_0 : in std_logic;
-        irq_1 : in std_logic
+        clk   : in std_ulogic;
+        rst   : in std_ulogic;
+        irq_0 : in std_ulogic;
+        irq_1 : in std_ulogic
     );
 end entity limen_alpha_basys2;
 
 
 architecture rtl of limen_alpha_basys2 is
     
-    signal la_clk      : std_logic;
-    signal la_mem_in   : std_logic_vector(15 downto 0);
-    signal la_mem_we   : std_logic;
-    signal la_mem_addr : std_logic_vector(15 downto 0);
-    signal la_mem_out  : std_logic_vector(15 downto 0);
+    signal la_clk      : std_ulogic;
+    signal la_mem_in   : std_ulogic_vector(15 downto 0);
+    signal la_mem_we   : std_ulogic;
+    signal la_mem_addr : std_ulogic_vector(15 downto 0);
+    signal la_mem_out  : std_ulogic_vector(15 downto 0);
     
 begin
     

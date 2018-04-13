@@ -16,17 +16,17 @@ use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
 
 entity jmp_tester is
     port (
-        i_jmp_type  : in  std_logic_vector(2 downto 0);
-        i_test_data : in  std_logic_vector(15 downto 0);
-        o_jmp_ack   : out std_logic
+        i_jmp_type  : in  std_ulogic_vector(2 downto 0);
+        i_test_data : in  std_ulogic_vector(15 downto 0);
+        o_jmp_ack   : out std_ulogic
     );
 end entity jmp_tester;
 
 
 architecture rtl of jmp_tester is
     
-    signal w_equal_zero : std_logic;
-    signal w_less_zero  : std_logic;
+    signal w_equal_zero : std_ulogic;
+    signal w_less_zero  : std_ulogic;
     
 begin
     

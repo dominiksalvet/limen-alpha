@@ -20,7 +20,7 @@ package util is
     --     value than '1' or '0' in it's scalar components. The function is not intended to be
     --     synthesized.
     function contains_only_01 (
-            p_VECTOR : std_logic_vector -- input vector
+            p_VECTOR : std_ulogic_vector -- input vector
         ) return boolean;
     
 end package util;
@@ -29,7 +29,7 @@ end package util;
 package body util is
     
     function contains_only_01 (
-            p_VECTOR : std_logic_vector
+            p_VECTOR : std_ulogic_vector
         ) return boolean is
     begin
         for i in p_VECTOR'range loop -- check every vector's scalar component

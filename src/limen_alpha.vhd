@@ -19,46 +19,46 @@ use work.core; -- core.vhd
 
 entity limen_alpha is
     port (
-        clk   : in std_logic;
-        rst   : in std_logic;
-        irq_0 : in std_logic;
-        irq_1 : in std_logic;
+        clk   : in std_ulogic;
+        rst   : in std_ulogic;
+        irq_0 : in std_ulogic;
+        irq_1 : in std_ulogic;
 
-        mem_in   : in  std_logic_vector(15 downto 0);
-        mem_we   : out std_logic;
-        mem_addr : out std_logic_vector(15 downto 0);
-        mem_out  : out std_logic_vector(15 downto 0)
+        mem_in   : in  std_ulogic_vector(15 downto 0);
+        mem_we   : out std_ulogic;
+        mem_addr : out std_ulogic_vector(15 downto 0);
+        mem_out  : out std_ulogic_vector(15 downto 0)
         );
 end entity limen_alpha;
 
 
 architecture rtl of limen_alpha is
 
-    signal core_sync_ack : std_logic;
-    signal core_sync_req : std_logic;
+    signal core_sync_ack : std_ulogic;
+    signal core_sync_req : std_ulogic;
 
-    signal core_mem_we   : std_logic;
-    signal core_mem_addr : std_logic_vector(15 downto 0);
+    signal core_mem_we   : std_ulogic;
+    signal core_mem_addr : std_ulogic_vector(15 downto 0);
 
-    signal core_0_mem_excl  : std_logic;
-    signal core_0_mem_yield : std_logic;
-    signal core_0_sync_req  : std_logic;
-    signal core_0_mem_we    : std_logic;
-    signal core_0_mem_addr  : std_logic_vector(15 downto 0);
-    signal core_0_mem_out   : std_logic_vector(15 downto 0);
+    signal core_0_mem_excl  : std_ulogic;
+    signal core_0_mem_yield : std_ulogic;
+    signal core_0_sync_req  : std_ulogic;
+    signal core_0_mem_we    : std_ulogic;
+    signal core_0_mem_addr  : std_ulogic_vector(15 downto 0);
+    signal core_0_mem_out   : std_ulogic_vector(15 downto 0);
 
-    signal core_1_mem_excl  : std_logic;
-    signal core_1_mem_yield : std_logic;
-    signal core_1_sync_req  : std_logic;
-    signal core_1_mem_we    : std_logic;
-    signal core_1_mem_addr  : std_logic_vector(15 downto 0);
-    signal core_1_mem_out   : std_logic_vector(15 downto 0);
+    signal core_1_mem_excl  : std_ulogic;
+    signal core_1_mem_yield : std_ulogic;
+    signal core_1_sync_req  : std_ulogic;
+    signal core_1_mem_we    : std_ulogic;
+    signal core_1_mem_addr  : std_ulogic_vector(15 downto 0);
+    signal core_1_mem_out   : std_ulogic_vector(15 downto 0);
 
-    signal sync_wr_en   : std_logic;
-    signal link_core_eq : std_logic;
+    signal sync_wr_en   : std_ulogic;
+    signal link_core_eq : std_ulogic;
 
-    signal link_bit  : std_logic;
-    signal link_core : std_logic := 'U';
+    signal link_bit  : std_ulogic;
+    signal link_core : std_ulogic := 'U';
 
 begin
 

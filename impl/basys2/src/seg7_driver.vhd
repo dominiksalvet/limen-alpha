@@ -25,18 +25,18 @@ use work.hex_to_seg7; -- hex_to_seg7.vhd
 
 entity seg7_driver is
     generic (
-        g_LED_ON_VALUE    : std_logic := '1'; -- LED on state represents this value
-        g_DIGIT_SEL_VALUE : std_logic := '1'; -- digit select represents this value
+        g_LED_ON_VALUE    : std_ulogic := '1'; -- LED on state represents this value
+        g_DIGIT_SEL_VALUE : std_ulogic := '1'; -- digit select represents this value
         g_DIGIT_COUNT     : positive  := 4 -- number of controlled digits
     );
     port (
-        i_clk : in std_logic; -- clock signal
-        i_rst : in std_logic; -- reset signal
+        i_clk : in std_ulogic; -- clock signal
+        i_rst : in std_ulogic; -- reset signal
         
         -- input data vector, will be treated as hexadecimal numbers (separated by 4 bits)
-        i_data      : in  std_logic_vector((g_DIGIT_COUNT * 4) - 1 downto 0);
-        o_seg7_sel  : out std_logic_vector(g_DIGIT_COUNT - 1 downto 0); -- seven segment select bits
-        o_seg7_data : out std_logic_vector(6 downto 0) -- actual seven segment digit data
+        i_data      : in  std_ulogic_vector((g_DIGIT_COUNT * 4) - 1 downto 0);
+        o_seg7_sel  : out std_ulogic_vector(g_DIGIT_COUNT - 1 downto 0); -- seven segment select bits
+        o_seg7_data : out std_ulogic_vector(6 downto 0) -- actual seven segment digit data
     );
 end entity seg7_driver;
 
@@ -44,8 +44,8 @@ end entity seg7_driver;
 architecture rtl of seg7_driver is
     
     -- i0_hex_to_seg7 ports
-    signal hts_i_hex_data  : std_logic_vector(3 downto 0);
-    signal hts_o_seg7_data : std_logic_vector(6 downto 0);
+    signal hts_i_hex_data  : std_ulogic_vector(3 downto 0);
+    signal hts_o_seg7_data : std_ulogic_vector(6 downto 0);
     
     signal r_seg7_sel_index : natural range 0 to g_DIGIT_COUNT - 1; -- index of displayed digit
     

@@ -16,16 +16,16 @@ use work.core_public.all; -- core_public.vhd
 
 entity sign_extend is
     port (
-        i_opcode : in  std_logic_vector(2 downto 0);
-        i_data   : in  std_logic_vector(9 downto 0);
-        o_data   : out std_logic_vector(15 downto 0)
+        i_opcode : in  std_ulogic_vector(2 downto 0);
+        i_data   : in  std_ulogic_vector(9 downto 0);
+        o_data   : out std_ulogic_vector(15 downto 0)
     );
 end entity sign_extend;
 
 
 architecture rtl of sign_extend is
     
-    signal w_extended_unsigned_data : std_logic_vector(15 downto 0);
+    signal w_extended_unsigned_data : std_ulogic_vector(15 downto 0);
     
 begin
     

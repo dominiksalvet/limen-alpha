@@ -30,20 +30,20 @@ entity clk_divider is
         g_FREQ_DIV_MAX_VALUE : positive := 7 -- maximum available frequency divisor value
     );
     port (
-        i_clk : in std_logic; -- input clock signal
-        i_rst : in std_logic; -- reset signal
+        i_clk : in std_ulogic; -- input clock signal
+        i_rst : in std_ulogic; -- reset signal
         
         -- i_clk frequency is divided by value of this number, <o_clk_freq>=<i_clk_freq>/i_freq_div
         i_freq_div : in  positive range 1 to g_FREQ_DIV_MAX_VALUE;
-        o_clk      : out std_logic -- final output clock
+        o_clk      : out std_ulogic -- final output clock
     );
 end entity clk_divider;
 
 
 architecture rtl of clk_divider is
     
-    signal r_use_direct_i_clk : std_logic; -- force to use direct i_clk input as output clock
-    signal r_divided_i_clk    : std_logic; -- value of i_clk based on counter method
+    signal r_use_direct_i_clk : std_ulogic; -- force to use direct i_clk input as output clock
+    signal r_divided_i_clk    : std_ulogic; -- value of i_clk based on counter method
     
 begin
     

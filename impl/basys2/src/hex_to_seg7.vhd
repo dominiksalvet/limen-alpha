@@ -21,8 +21,8 @@ use work.hex_to_seg7_public.all; -- hex_to_seg7_public.vhd
 
 entity hex_to_seg7 is
     port (
-        i_hex_data  : in  std_logic_vector(3 downto 0); -- 4-bit data as encoded hexadecimal number
-        o_seg7_data : out std_logic_vector(6 downto 0) -- 7-bit segment data, bit per each segment
+        i_hex_data  : in  std_ulogic_vector(3 downto 0); -- 4-bit data as encoded hexadecimal number
+        o_seg7_data : out std_ulogic_vector(6 downto 0) -- 7-bit segment data, bit per each segment
     );
 end entity hex_to_seg7;
 

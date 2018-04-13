@@ -27,11 +27,11 @@ architecture behavior of clk_divider_tb is
     constant g_FREQ_DIV_MAX_VALUE : positive := 7;
     
     -- uut ports
-    signal i_clk : std_logic := '0';
-    signal i_rst : std_logic := '0';
+    signal i_clk : std_ulogic := '0';
+    signal i_rst : std_ulogic := '0';
     
     signal i_freq_div : positive := 1;
-    signal o_clk      : std_logic;
+    signal o_clk      : std_ulogic;
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;

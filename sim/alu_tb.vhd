@@ -19,11 +19,11 @@ end entity alu_tb;
 architecture behavior of alu_tb is
     
     -- uut ports
-    signal i_operation : std_logic_vector(3 downto 0)  := (others => '0');
-    signal i_sub_add   : std_logic                     := '0';
-    signal i_operand_l : std_logic_vector(15 downto 0) := (others => '0');
-    signal i_operand_r : std_logic_vector(15 downto 0) := (others => '0');
-    signal o_result    : std_logic_vector(15 downto 0);
+    signal i_operation : std_ulogic_vector(3 downto 0)  := (others => '0');
+    signal i_sub_add   : std_ulogic                     := '0';
+    signal i_operand_l : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal i_operand_r : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal o_result    : std_ulogic_vector(15 downto 0);
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;
@@ -49,11 +49,11 @@ begin
         wait for c_CLK_PERIOD;
         
         i_operation <= c_ALU_ADD;
-        i_operand_l <= std_logic_vector(to_signed(52, i_operand_l'length));
-        i_operand_r <= std_logic_vector(to_signed(76, i_operand_r'length));
+        i_operand_l <= std_ulogic_vector(to_signed(52, i_operand_l'length));
+        i_operand_r <= std_ulogic_vector(to_signed(76, i_operand_r'length));
         wait for c_CLK_PERIOD;
         
-        i_operand_r <= std_logic_vector(to_signed(-51, i_operand_r'length));
+        i_operand_r <= std_ulogic_vector(to_signed(-51, i_operand_r'length));
         wait for c_CLK_PERIOD;
         
         i_operand_l <= (others => '1');

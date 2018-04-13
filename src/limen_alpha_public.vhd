@@ -4,13 +4,13 @@ use ieee.std_logic_1164.all;
 
 package limen_alpha_public is
     
-    constant CORE_0_INT_ADDR   : std_logic_vector(15 downto 0) := x"0004";
-    constant CORE_0_IP_REG_RST : std_logic_vector(15 downto 0) := x"0000";
-    constant CORE_0_PRNG_SEED  : std_logic_vector(15 downto 0) := x"ffff";
+    constant CORE_0_INT_ADDR   : std_ulogic_vector(15 downto 0) := x"0004";
+    constant CORE_0_IP_REG_RST : std_ulogic_vector(15 downto 0) := x"0000";
+    constant CORE_0_PRNG_SEED  : std_ulogic_vector(15 downto 0) := x"ffff";
     
-    constant CORE_1_INT_ADDR   : std_logic_vector(15 downto 0) := x"000c";
-    constant CORE_1_IP_REG_RST : std_logic_vector(15 downto 0) := x"0008";
-    constant CORE_1_PRNG_SEED  : std_logic_vector(15 downto 0) := x"ddd4";
+    constant CORE_1_INT_ADDR   : std_ulogic_vector(15 downto 0) := x"000c";
+    constant CORE_1_IP_REG_RST : std_ulogic_vector(15 downto 0) := x"0008";
+    constant CORE_1_PRNG_SEED  : std_ulogic_vector(15 downto 0) := x"ddd4";
     
 end package limen_alpha_public;
 

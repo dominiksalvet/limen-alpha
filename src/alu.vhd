@@ -18,25 +18,25 @@ use work.alu_public.all; -- alu_public.vhd
 
 entity alu is
     port (
-        i_operation : in  std_logic_vector(3 downto 0);
-        i_sub_add   : in  std_logic;
-        i_operand_l : in  std_logic_vector(15 downto 0);
-        i_operand_r : in  std_logic_vector(15 downto 0);
-        o_result    : out std_logic_vector(15 downto 0)
+        i_operation : in  std_ulogic_vector(3 downto 0);
+        i_sub_add   : in  std_ulogic;
+        i_operand_l : in  std_ulogic_vector(15 downto 0);
+        i_operand_r : in  std_ulogic_vector(15 downto 0);
+        o_result    : out std_ulogic_vector(15 downto 0)
     );
 end entity alu;
 
 
 architecture rtl of alu is
     
-    signal w_adder_result : std_logic_vector(16 downto 0);
+    signal w_adder_result : std_ulogic_vector(16 downto 0);
     
-    signal w_unsigned_less_lr : std_logic;
-    signal w_signed_less_lr   : std_logic;
+    signal w_unsigned_less_lr : std_ulogic;
+    signal w_signed_less_lr   : std_ulogic;
     
 begin
     
-    w_adder_result <= std_logic_vector(
+    w_adder_result <= std_ulogic_vector(
             unsigned('0' & i_operand_l) +
             unsigned('0' & (i_operand_r xor (15 downto 0 => i_sub_add))) +
             unsigned'(0 => i_sub_add)

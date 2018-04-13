@@ -28,99 +28,99 @@ use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
 
 entity core is
     generic (
-        INT_ADDR   : std_logic_vector(15 downto 0);
-        IP_REG_RST : std_logic_vector(15 downto 0);
-        PRNG_SEED  : std_logic_vector(15 downto 0)
+        INT_ADDR   : std_ulogic_vector(15 downto 0);
+        IP_REG_RST : std_ulogic_vector(15 downto 0);
+        PRNG_SEED  : std_ulogic_vector(15 downto 0)
         );
     port (
-        clk : in std_logic;
-        rst : in std_logic;
-        irq : in std_logic;
+        clk : in std_ulogic;
+        rst : in std_ulogic;
+        irq : in std_ulogic;
 
-        mem_excl  : in  std_logic;
-        sync_ack  : in  std_logic;
-        mem_yield : out std_logic;
-        sync_req  : out std_logic;
+        mem_excl  : in  std_ulogic;
+        sync_ack  : in  std_ulogic;
+        mem_yield : out std_ulogic;
+        sync_req  : out std_ulogic;
 
-        mem_in   : in  std_logic_vector(15 downto 0);
-        mem_we   : out std_logic;
-        mem_addr : out std_logic_vector(15 downto 0);
-        mem_out  : out std_logic_vector(15 downto 0)
+        mem_in   : in  std_ulogic_vector(15 downto 0);
+        mem_we   : out std_ulogic;
+        mem_addr : out std_ulogic_vector(15 downto 0);
+        mem_out  : out std_ulogic_vector(15 downto 0)
         );
 end entity core;
 
 
 architecture rtl of core is
 
-    constant CLK_PHASE_0 : std_logic_vector(1 downto 0) := "00";
-    constant CLK_PHASE_1 : std_logic_vector(1 downto 0) := "01";
-    constant CLK_PHASE_2 : std_logic_vector(1 downto 0) := "10";
-    constant CLK_PHASE_3 : std_logic_vector(1 downto 0) := "11";
+    constant CLK_PHASE_0 : std_ulogic_vector(1 downto 0) := "00";
+    constant CLK_PHASE_1 : std_ulogic_vector(1 downto 0) := "01";
+    constant CLK_PHASE_2 : std_ulogic_vector(1 downto 0) := "10";
+    constant CLK_PHASE_3 : std_ulogic_vector(1 downto 0) := "11";
 
-    constant REG_MSR  : std_logic_vector(2 downto 0) := "000";
-    constant REG_SIP  : std_logic_vector(2 downto 0) := "001";
-    constant REG_PRNG : std_logic_vector(2 downto 0) := "010";
+    constant REG_MSR  : std_ulogic_vector(2 downto 0) := "000";
+    constant REG_SIP  : std_ulogic_vector(2 downto 0) := "001";
+    constant REG_PRNG : std_ulogic_vector(2 downto 0) := "010";
 
-    constant REG_MSR_RST : std_logic_vector(15 downto 0) := x"0001";
+    constant REG_MSR_RST : std_ulogic_vector(15 downto 0) := x"0001";
 
     -- reg_file_0 ports
-    signal rf_i_z_we    : std_logic;
-    signal rf_i_z_index : std_logic_vector(2 downto 0);
-    signal rf_i_z_data  : std_logic_vector(15 downto 0);
+    signal rf_i_z_we    : std_ulogic;
+    signal rf_i_z_index : std_ulogic_vector(2 downto 0);
+    signal rf_i_z_data  : std_ulogic_vector(15 downto 0);
 
-    signal rf_i_y_index : std_logic_vector(2 downto 0);
-    signal rf_o_y_data  : std_logic_vector(15 downto 0);
+    signal rf_i_y_index : std_ulogic_vector(2 downto 0);
+    signal rf_o_y_data  : std_ulogic_vector(15 downto 0);
 
-    signal rf_i_x_index : std_logic_vector(2 downto 0);
-    signal rf_o_x_data  : std_logic_vector(15 downto 0);
+    signal rf_i_x_index : std_ulogic_vector(2 downto 0);
+    signal rf_o_x_data  : std_ulogic_vector(15 downto 0);
 
     -- sign_extend_0 ports
-    signal se_o_data : std_logic_vector(15 downto 0);
+    signal se_o_data : std_ulogic_vector(15 downto 0);
 
     -- alu_0 ports
-    signal alu_i_operation : std_logic_vector(3 downto 0);
-    signal alu_i_sub_add   : std_logic;
-    signal alu_i_operand_l : std_logic_vector(15 downto 0);
-    signal alu_i_operand_r : std_logic_vector(15 downto 0);
-    signal alu_o_result    : std_logic_vector(15 downto 0);
+    signal alu_i_operation : std_ulogic_vector(3 downto 0);
+    signal alu_i_sub_add   : std_ulogic;
+    signal alu_i_operand_l : std_ulogic_vector(15 downto 0);
+    signal alu_i_operand_r : std_ulogic_vector(15 downto 0);
+    signal alu_o_result    : std_ulogic_vector(15 downto 0);
 
-    signal inst_alu_operation : std_logic_vector(3 downto 0);
-    signal inst_alu_operand_l : std_logic_vector(15 downto 0);
-    signal inst_alu_operand_r : std_logic_vector(15 downto 0);
+    signal inst_alu_operation : std_ulogic_vector(3 downto 0);
+    signal inst_alu_operand_l : std_ulogic_vector(15 downto 0);
+    signal inst_alu_operand_r : std_ulogic_vector(15 downto 0);
 
     -- jmp_tester_0 ports
-    signal jt_i_jmp_type  : std_logic_vector(2 downto 0);
-    signal jt_i_test_data : std_logic_vector(15 downto 0);
-    signal jt_o_jmp_ack       : std_logic;
+    signal jt_i_jmp_type  : std_ulogic_vector(2 downto 0);
+    signal jt_i_test_data : std_ulogic_vector(15 downto 0);
+    signal jt_o_jmp_ack       : std_ulogic;
 
-    signal clk_phase  : std_logic_vector(1 downto 0);
-    signal sync_phase : std_logic_vector(1 downto 0);
+    signal clk_phase  : std_ulogic_vector(1 downto 0);
+    signal sync_phase : std_ulogic_vector(1 downto 0);
 
-    signal ip_reg : std_logic_vector(15 downto 0) := (others => '-');
-    signal ir_reg : std_logic_vector(15 downto 0);
+    signal ip_reg : std_ulogic_vector(15 downto 0) := (others => '-');
+    signal ir_reg : std_ulogic_vector(15 downto 0);
 
-    signal inc_ip_reg     : std_logic_vector(15 downto 0);
-    signal alu_result_reg : std_logic_vector(15 downto 0);
+    signal inc_ip_reg     : std_ulogic_vector(15 downto 0);
+    signal alu_result_reg : std_ulogic_vector(15 downto 0);
 
-    signal opcode       : std_logic_vector(2 downto 0);
-    signal ll_inst_dec  : std_logic;
-    signal ld_inst_dec  : std_logic;
-    signal sc_inst_dec  : std_logic;
-    signal st_inst_dec  : std_logic;
-    signal rtc_inst_dec : std_logic;
-    signal ctr_inst_dec : std_logic;
+    signal opcode       : std_ulogic_vector(2 downto 0);
+    signal ll_inst_dec  : std_ulogic;
+    signal ld_inst_dec  : std_ulogic;
+    signal sc_inst_dec  : std_ulogic;
+    signal st_inst_dec  : std_ulogic;
+    signal rtc_inst_dec : std_ulogic;
+    signal ctr_inst_dec : std_ulogic;
 
-    signal alu_mem_en    : std_logic;
-    signal next_ip       : std_logic_vector(15 downto 0);
-    signal alu_ldimm_opc : std_logic_vector(3 downto 0);
+    signal alu_mem_en    : std_ulogic;
+    signal next_ip       : std_ulogic_vector(15 downto 0);
+    signal alu_ldimm_opc : std_ulogic_vector(3 downto 0);
 
-    signal msr_reg  : std_logic_vector(15 downto 0);
-    signal sip_reg  : std_logic_vector(15 downto 0) := (others => '-');
-    signal prng_reg : std_logic_vector(15 downto 0);
+    signal msr_reg  : std_ulogic_vector(15 downto 0);
+    signal sip_reg  : std_ulogic_vector(15 downto 0) := (others => '-');
+    signal prng_reg : std_ulogic_vector(15 downto 0);
 
-    signal c_reg_index : std_logic_vector(2 downto 0);
-    signal c_reg_d_in  : std_logic_vector(15 downto 0);
-    signal c_reg_d_out : std_logic_vector(15 downto 0);
+    signal c_reg_index : std_ulogic_vector(2 downto 0);
+    signal c_reg_d_in  : std_ulogic_vector(15 downto 0);
+    signal c_reg_d_out : std_ulogic_vector(15 downto 0);
 
 begin
 
@@ -293,7 +293,7 @@ begin
                     alu_i_operation <= c_ALU_ADD;
                     alu_i_sub_add   <= '0';
                     alu_i_operand_l <= ip_reg;
-                    alu_i_operand_r <= std_logic_vector(to_signed(1, alu_i_operand_r'length));
+                    alu_i_operand_r <= std_ulogic_vector(to_signed(1, alu_i_operand_r'length));
                 else
                     alu_i_operation <= inst_alu_operation;
                     alu_i_sub_add   <= (inst_alu_operation(3) and not inst_alu_operation(2)) and

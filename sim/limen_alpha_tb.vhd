@@ -17,20 +17,20 @@ end entity limen_alpha_tb;
 architecture behavior of limen_alpha_tb is
     
     -- uut ports
-    signal clk   : std_logic := '0';
-    signal rst   : std_logic := '0';
-    signal irq_0 : std_logic := '0';
-    signal irq_1 : std_logic := '0';
+    signal clk   : std_ulogic := '0';
+    signal rst   : std_ulogic := '0';
+    signal irq_0 : std_ulogic := '0';
+    signal irq_1 : std_ulogic := '0';
     
-    signal mem_in   : std_logic_vector(15 downto 0);
-    signal mem_we   : std_logic                     := '0';
-    signal mem_addr : std_logic_vector(15 downto 0) := (others => '0');
-    signal mem_out  : std_logic_vector(15 downto 0) := (others => '0');
+    signal mem_in   : std_ulogic_vector(15 downto 0);
+    signal mem_we   : std_ulogic                     := '0';
+    signal mem_addr : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal mem_out  : std_ulogic_vector(15 downto 0) := (others => '0');
     
     
     constant MEM_ADDR_WIDTH : integer range 0 to 16 := 8;
     
-    type mem_array is array ((2 ** MEM_ADDR_WIDTH) - 1 downto 0) of std_logic_vector(15 downto 0);
+    type mem_array is array ((2 ** MEM_ADDR_WIDTH) - 1 downto 0) of std_ulogic_vector(15 downto 0);
     signal rwm_array : mem_array := (
         
         -- == Two investors ==

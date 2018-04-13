@@ -19,29 +19,29 @@ end entity core_tb;
 architecture behavior of core_tb is
     
     -- uut generics
-    constant INT_ADDR   : std_logic_vector(15 downto 0) := CORE_0_INT_ADDR;
-    constant IP_REG_RST : std_logic_vector(15 downto 0) := CORE_0_IP_REG_RST;
-    constant PRNG_SEED  : std_logic_vector(15 downto 0) := CORE_0_PRNG_SEED;
+    constant INT_ADDR   : std_ulogic_vector(15 downto 0) := CORE_0_INT_ADDR;
+    constant IP_REG_RST : std_ulogic_vector(15 downto 0) := CORE_0_IP_REG_RST;
+    constant PRNG_SEED  : std_ulogic_vector(15 downto 0) := CORE_0_PRNG_SEED;
     
     -- uut ports
-    signal clk : std_logic := '0';
-    signal rst : std_logic := '0';
-    signal irq : std_logic := '0';
+    signal clk : std_ulogic := '0';
+    signal rst : std_ulogic := '0';
+    signal irq : std_ulogic := '0';
     
-    signal mem_excl  : std_logic := '0';
-    signal sync_ack  : std_logic := '0';
-    signal mem_yield : std_logic;
-    signal sync_req  : std_logic;
+    signal mem_excl  : std_ulogic := '0';
+    signal sync_ack  : std_ulogic := '0';
+    signal mem_yield : std_ulogic;
+    signal sync_req  : std_ulogic;
     
-    signal mem_in   : std_logic_vector(15 downto 0) := (others => '0');
-    signal mem_we   : std_logic;
-    signal mem_addr : std_logic_vector(15 downto 0);
-    signal mem_out  : std_logic_vector(15 downto 0); 
+    signal mem_in   : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal mem_we   : std_ulogic;
+    signal mem_addr : std_ulogic_vector(15 downto 0);
+    signal mem_out  : std_ulogic_vector(15 downto 0); 
     
     
     constant MEM_ADDR_SIZE : integer range 0 to 16 := 12;
     
-    type mem_array is array ((2 ** MEM_ADDR_SIZE) - 1 downto 0) of std_logic_vector(15 downto 0);
+    type mem_array is array ((2 ** MEM_ADDR_SIZE) - 1 downto 0) of std_ulogic_vector(15 downto 0);
     signal rwm_array : mem_array := (
         
         -- == Unsigned software division ==

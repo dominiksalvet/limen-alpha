@@ -27,17 +27,17 @@ end entity seg7_driver_tb;
 architecture behavior of seg7_driver_tb is
     
     -- uut generics
-    constant g_LED_ON_VALUE    : std_logic := '1';
-    constant g_DIGIT_SEL_VALUE : std_logic := '1';
+    constant g_LED_ON_VALUE    : std_ulogic := '1';
+    constant g_DIGIT_SEL_VALUE : std_ulogic := '1';
     constant g_DIGIT_COUNT     : positive  := 4;
     
     -- uut ports
-    signal i_clk : std_logic := '0';
-    signal i_rst : std_logic := '0';
+    signal i_clk : std_ulogic := '0';
+    signal i_rst : std_ulogic := '0';
     
-    signal i_data      : std_logic_vector((g_DIGIT_COUNT * 4) - 1 downto 0) := (others => '0');
-    signal o_seg7_sel  : std_logic_vector(g_DIGIT_COUNT - 1 downto 0);
-    signal o_seg7_data : std_logic_vector(6 downto 0);
+    signal i_data      : std_ulogic_vector((g_DIGIT_COUNT * 4) - 1 downto 0) := (others => '0');
+    signal o_seg7_sel  : std_ulogic_vector(g_DIGIT_COUNT - 1 downto 0);
+    signal o_seg7_data : std_ulogic_vector(6 downto 0);
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;

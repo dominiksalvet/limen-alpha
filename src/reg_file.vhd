@@ -17,26 +17,26 @@ use work.reg_file_interf.all; -- reg_file_interf.vhd
 
 entity reg_file is
     port (
-        i_clk : in std_logic;
+        i_clk : in std_ulogic;
         
-        i_z_we    : in std_logic;
-        i_z_index : in std_logic_vector(2 downto 0);
-        i_z_data  : in std_logic_vector(15 downto 0);
+        i_z_we    : in std_ulogic;
+        i_z_index : in std_ulogic_vector(2 downto 0);
+        i_z_data  : in std_ulogic_vector(15 downto 0);
         
-        i_y_index : in  std_logic_vector(2 downto 0);
-        o_y_data  : out std_logic_vector(15 downto 0);
+        i_y_index : in  std_ulogic_vector(2 downto 0);
+        o_y_data  : out std_ulogic_vector(15 downto 0);
         
-        i_x_index : in  std_logic_vector(2 downto 0);
-        o_x_data  : out std_logic_vector(15 downto 0)
+        i_x_index : in  std_ulogic_vector(2 downto 0);
+        o_x_data  : out std_ulogic_vector(15 downto 0)
     );
 end entity reg_file;
 
 
 architecture rtl of reg_file is
     
-    constant c_REG_R0_VALUE : std_logic_vector(15 downto 0) := x"0000";
+    constant c_REG_R0_VALUE : std_ulogic_vector(15 downto 0) := x"0000";
     
-    type t_REGISTERS is array(0 to 7) of std_logic_vector(15 downto 0);
+    type t_REGISTERS is array(0 to 7) of std_ulogic_vector(15 downto 0);
     signal r_registers : t_REGISTERS := (
         0      => c_REG_R0_VALUE,
         others => (others => 'U')

@@ -20,17 +20,17 @@ end entity reg_file_tb;
 architecture behavior of reg_file_tb is
     
     -- uut ports
-    signal i_clk : std_logic := '0';
+    signal i_clk : std_ulogic := '0';
     
-    signal i_z_we    : std_logic                     := '0';
-    signal i_z_index : std_logic_vector(2 downto 0)  := (others => '0');
-    signal i_z_data  : std_logic_vector(15 downto 0) := (others => '0');
+    signal i_z_we    : std_ulogic                     := '0';
+    signal i_z_index : std_ulogic_vector(2 downto 0)  := (others => '0');
+    signal i_z_data  : std_ulogic_vector(15 downto 0) := (others => '0');
     
-    signal i_y_index : std_logic_vector(2 downto 0) := (others => '0');
-    signal o_y_data  : std_logic_vector(15 downto 0);
+    signal i_y_index : std_ulogic_vector(2 downto 0) := (others => '0');
+    signal o_y_data  : std_ulogic_vector(15 downto 0);
     
-    signal i_x_index : std_logic_vector(2 downto 0) := (others => '0');
-    signal o_x_data  : std_logic_vector(15 downto 0);
+    signal i_x_index : std_ulogic_vector(2 downto 0) := (others => '0');
+    signal o_x_data  : std_ulogic_vector(15 downto 0);
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;
@@ -60,10 +60,10 @@ begin
         loop
             wait for c_CLK_PERIOD;
             
-            i_z_index <= std_logic_vector(unsigned(i_z_index) + 1);
-            i_z_data  <= std_logic_vector(unsigned(i_z_data) + 1);
-            i_y_index <= std_logic_vector(unsigned(i_y_index) + 3);
-            i_x_index <= std_logic_vector(unsigned(i_y_index) + 5);
+            i_z_index <= std_ulogic_vector(unsigned(i_z_index) + 1);
+            i_z_data  <= std_ulogic_vector(unsigned(i_z_data) + 1);
+            i_y_index <= std_ulogic_vector(unsigned(i_y_index) + 3);
+            i_x_index <= std_ulogic_vector(unsigned(i_y_index) + 5);
             
             if (i_z_index = c_REG_R0) then
                 i_z_we <= not i_z_we;
