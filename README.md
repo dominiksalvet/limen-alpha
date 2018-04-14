@@ -5,6 +5,7 @@ Limen Alpha is a dual-core 16-bit RISC processor architecture with a hardware sy
 Currently I am intensively working on this project transition to format I am using now, see the list below.
 
 ## To do list
+* change ".vhd" extension of all VHDL source files to ".vhdl"
 * get the [VHDL Collection](https://github.com/dominiksalvet/vhdl_collection) repository to a consistent and stable state
 * remaster the following source files (the first iteration - code formatting):
   * [*core.vhd*](src/core.vhd) + [*core_tb.vhd*](sim/core_tb.vhd)
