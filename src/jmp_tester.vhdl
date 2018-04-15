@@ -1,4 +1,7 @@
 --------------------------------------------------------------------------------
+-- Standard: VHDL-1993
+-- Platform: independent
+--------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
 -- Notes:
@@ -7,62 +10,42 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
 
-use work.jmp_tester; -- jmp_tester.vhd
-use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
+use work.jmp_tester_interf.all;
 
 
-entity jmp_tester_tb is
-end entity jmp_tester_tb;
+entity jmp_tester is
+    port (
+        i_jmp_type  : in  std_ulogic_vector(2 downto 0);
+        i_test_data : in  std_ulogic_vector(15 downto 0);
+        o_jmp_ack   : out std_ulogic
+    );
+end entity jmp_tester;
 
 
-architecture behavior of jmp_tester_tb is
+architecture rtl of jmp_tester is
     
-    -- uut ports
-    signal i_jmp_type  : std_ulogic_vector(2 downto 0)  := (others => '0');
-    signal i_test_data : std_ulogic_vector(15 downto 0) := (others => '0');
-    signal o_jmp_ack   : std_ulogic;
-    
-    -- clock period definition
-    constant c_CLK_PERIOD : time := 10 ns;
+    signal w_equal_zero : std_ulogic;
+    signal w_less_zero  : std_ulogic;
     
 begin
     
-    -- instantiate the unit under test (uut)
-    uut : entity work.jmp_tester(rtl)
-        port map (
-            i_jmp_type  => i_jmp_type,
-            i_test_data => i_test_data,
-            o_jmp_ack   => o_jmp_ack
-        );
+    w_equal_zero <= '1' when i_test_data = (15 downto 0 => '0') else '0';
     
-    stimulus : process is
-    begin
-        
-        i_jmp_type  <= c_JMP_NEVER;
-        i_test_data <= std_ulogic_vector(to_signed(5, i_test_data'length));
-        wait for c_CLK_PERIOD;
-        
-        i_jmp_type <= c_JMP_GE;
-        wait for c_CLK_PERIOD;
-        
-        i_test_data <= std_ulogic_vector(to_signed(0, i_test_data'length));
-        wait for c_CLK_PERIOD;
-        
-        i_jmp_type <= c_JMP_G;
-        wait for c_CLK_PERIOD;
-        
-        i_test_data <= std_ulogic_vector(to_signed(-20, i_test_data'length));
-        i_jmp_type  <= c_JMP_L;
-        wait for c_CLK_PERIOD;
-        
-        i_test_data <= (others => '0');
-        wait;
-        
-    end process stimulus;
+    w_less_zero <= i_test_data(15);
     
-end architecture behavior;
+    with i_jmp_type select o_jmp_ack <= 
+        '0'                                  when c_JMP_NEVER,
+        '1'                                  when c_JMP_ALWAYS,
+        not w_equal_zero                     when c_JMP_NE,
+        w_equal_zero                         when c_JMP_E,
+        w_less_zero                          when c_JMP_L,
+        w_less_zero or w_equal_zero          when c_JMP_LE,
+        not w_less_zero and not w_equal_zero when c_JMP_G,
+        not w_less_zero                      when c_JMP_GE,
+        'X'                                  when others;
+    
+end architecture rtl;
 
 
 --------------------------------------------------------------------------------

@@ -1,4 +1,7 @@
 --------------------------------------------------------------------------------
+-- Standard: VHDL-1993
+-- Platform: independent
+--------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
 -- Notes:
@@ -9,47 +12,51 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.sign_extend; -- sign_extend.vhd
+use work.reg_file_interf.all;
 
 
-entity sign_extend_tb is
-end entity sign_extend_tb;
+entity reg_file is
+    port (
+        i_clk : in std_ulogic;
+        
+        i_z_we    : in std_ulogic;
+        i_z_index : in std_ulogic_vector(2 downto 0);
+        i_z_data  : in std_ulogic_vector(15 downto 0);
+        
+        i_y_index : in  std_ulogic_vector(2 downto 0);
+        o_y_data  : out std_ulogic_vector(15 downto 0);
+        
+        i_x_index : in  std_ulogic_vector(2 downto 0);
+        o_x_data  : out std_ulogic_vector(15 downto 0)
+    );
+end entity reg_file;
 
 
-architecture behavior of sign_extend_tb is
+architecture rtl of reg_file is
     
-    -- uut ports
-    signal i_opcode : std_ulogic_vector(2 downto 0) := (others => '0');
-    signal i_data   : std_ulogic_vector(9 downto 0) := (others => '0');
-    signal o_data   : std_ulogic_vector(15 downto 0);
+    constant c_REG_R0_VALUE : std_ulogic_vector(15 downto 0) := x"0000";
     
-    -- clock period definition
-    constant c_CLK_PERIOD : time := 10 ns;
+    type t_REGISTERS is array(0 to 7) of std_ulogic_vector(15 downto 0);
+    signal r_registers : t_REGISTERS := (
+        0      => c_REG_R0_VALUE,
+        others => (others => 'U')
+        );
     
 begin
     
-    -- instantiate the unit under test (uut)
-    uut : entity work.sign_extend(rtl)
-        port map (
-            i_opcode => i_opcode,
-            i_data   => i_data,
-            o_data   => o_data
-        );
+    o_y_data <= r_registers(to_integer(unsigned(i_y_index)));
+    o_x_data <= r_registers(to_integer(unsigned(i_x_index)));
     
-    stimulus : process is
+    registers_write : process (i_clk) is
     begin
-        
-        i_data <= "1010101010";
-        wait for c_CLK_PERIOD;
-        
-        loop
-            i_opcode <= std_ulogic_vector(unsigned(i_opcode) + 1);
-            wait for c_CLK_PERIOD;
-        end loop;
-        
-    end process stimulus;
+        if (rising_edge(i_clk)) then
+            if (i_z_we = '1' and i_z_index /= c_REG_R0) then
+                r_registers(to_integer(unsigned(i_z_index))) <= i_z_data;
+            end if;
+        end if;
+    end process registers_write;
     
-end architecture behavior;
+end architecture rtl;
 
 
 --------------------------------------------------------------------------------

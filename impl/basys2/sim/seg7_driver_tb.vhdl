@@ -15,9 +15,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.seg7_driver; -- seg7_driver.vhd
+use work.seg7_driver;
 
-use work.hex_to_seg7_public.all; -- hex_to_seg7_public.vhd
+use work.hex_to_seg7_public.all;
 
 
 entity seg7_driver_tb is

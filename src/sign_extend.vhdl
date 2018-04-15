@@ -3,52 +3,42 @@
 -- Platform: independent
 --------------------------------------------------------------------------------
 -- Description:
---     Converter from hexadecimal data to seven segment data.
 --------------------------------------------------------------------------------
 -- Notes:
---     1. If the output o_seg7_data signal is wired to LEDs, it is required to
---        respect the LEDs on/off value and inverse the signal eventually.
---     2. This implementation assumes LED on state as '0' value and LED off
---        state as '1' value.
 --------------------------------------------------------------------------------
 
 
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.hex_to_seg7_public.all; -- hex_to_seg7_public.vhd
+use work.core_public.all;
 
 
-entity hex_to_seg7 is
+entity sign_extend is
     port (
-        i_hex_data  : in  std_ulogic_vector(3 downto 0); -- 4-bit data as encoded hexadecimal number
-        o_seg7_data : out std_ulogic_vector(6 downto 0) -- 7-bit segment data, bit per each segment
+        i_opcode : in  std_ulogic_vector(2 downto 0);
+        i_data   : in  std_ulogic_vector(9 downto 0);
+        o_data   : out std_ulogic_vector(15 downto 0)
     );
-end entity hex_to_seg7;
+end entity sign_extend;
 
 
-architecture rtl of hex_to_seg7 is
+architecture rtl of sign_extend is
+    
+    signal w_extended_unsigned_data : std_ulogic_vector(15 downto 0);
+    
 begin
     
-    -- hexadecimal to seven segment conversion implementation
-    with i_hex_data select o_seg7_data <= 
-        c_SEG7_0        when "0000",
-        c_SEG7_1        when "0001",
-        c_SEG7_2        when "0010",
-        c_SEG7_3        when "0011",
-        c_SEG7_4        when "0100",
-        c_SEG7_5        when "0101",
-        c_SEG7_6        when "0110",
-        c_SEG7_7        when "0111",
-        c_SEG7_8        when "1000",
-        c_SEG7_9        when "1001",
-        c_SEG7_A        when "1010",
-        c_SEG7_B        when "1011",
-        c_SEG7_C        when "1100",
-        c_SEG7_D        when "1101",
-        c_SEG7_E        when "1110",
-        c_SEG7_F        when "1111",
-        (others => 'X') when others;
+    w_extended_unsigned_data <= 
+        i_data(9 downto 2) & (7 downto 0 => '0') when i_data(0) = '1' else
+        (7 downto 0 => '0') & i_data(9 downto 2);
+    
+    with i_opcode select o_data <= 
+        (11 downto 0 => '0') & i_data(6 downto 3)       when c_OPCODE_LI,
+        w_extended_unsigned_data                        when c_OPCODE_LDI,
+        (8 downto 0  => i_data(9)) & i_data(9 downto 3) when c_OPCODE_CJSI,
+        (5 downto 0  => i_data(9)) & i_data(9 downto 0) when c_OPCODE_JSI,
+        (11 downto 0 => i_data(7)) & i_data(6 downto 3) when others;
     
 end architecture rtl;
 
@@ -56,7 +46,7 @@ end architecture rtl;
 --------------------------------------------------------------------------------
 -- MIT License
 --
--- Copyright (c) 2018 Dominik Salvet
+-- Copyright (c) 2015-2018 Dominik Salvet
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to deal

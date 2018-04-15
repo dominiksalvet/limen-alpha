@@ -9,21 +9,28 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.alu_interf.all; -- alu_interf.vhd
+use work.reg_file;
+use work.reg_file_interf.all;
 
 
-entity alu_tb is
-end entity alu_tb;
+entity reg_file_tb is
+end entity reg_file_tb;
 
 
-architecture behavior of alu_tb is
+architecture behavior of reg_file_tb is
     
     -- uut ports
-    signal i_operation : std_ulogic_vector(3 downto 0)  := (others => '0');
-    signal i_sub_add   : std_ulogic                     := '0';
-    signal i_operand_l : std_ulogic_vector(15 downto 0) := (others => '0');
-    signal i_operand_r : std_ulogic_vector(15 downto 0) := (others => '0');
-    signal o_result    : std_ulogic_vector(15 downto 0);
+    signal i_clk : std_ulogic := '0';
+    
+    signal i_z_we    : std_ulogic                     := '0';
+    signal i_z_index : std_ulogic_vector(2 downto 0)  := (others => '0');
+    signal i_z_data  : std_ulogic_vector(15 downto 0) := (others => '0');
+    
+    signal i_y_index : std_ulogic_vector(2 downto 0) := (others => '0');
+    signal o_y_data  : std_ulogic_vector(15 downto 0);
+    
+    signal i_x_index : std_ulogic_vector(2 downto 0) := (others => '0');
+    signal o_x_data  : std_ulogic_vector(15 downto 0);
     
     -- clock period definition
     constant c_CLK_PERIOD : time := 10 ns;
@@ -31,36 +38,37 @@ architecture behavior of alu_tb is
 begin
     
     -- instantiate the unit under test (uut)
-    uut : entity work.alu(rtl)
+    uut : entity work.reg_file(rtl)
         port map (
-            i_operation => i_operation,
-            i_sub_add   => i_sub_add,
-            i_operand_l => i_operand_l,
-            i_operand_r => i_operand_r,
-            o_result    => o_result
+            i_clk => i_clk,
+            
+            i_z_we    => i_z_we,
+            i_z_index => i_z_index,
+            i_z_data  => i_z_data,
+            
+            i_y_index => i_y_index,
+            o_y_data  => o_y_data,
+            
+            i_x_index => i_x_index,
+            o_x_data  => o_x_data
         );
+    
+    i_clk <= not i_clk after c_CLK_PERIOD / 2; -- setup i_clk as periodic signal
     
     stimulus : process is
     begin
-        
-        i_operation <= c_ALU_OR;
-        i_operand_l <= "1100110011001100";
-        i_operand_r <= "0011001100110011";
-        wait for c_CLK_PERIOD;
-        
-        i_operation <= c_ALU_ADD;
-        i_operand_l <= std_ulogic_vector(to_signed(52, i_operand_l'length));
-        i_operand_r <= std_ulogic_vector(to_signed(76, i_operand_r'length));
-        wait for c_CLK_PERIOD;
-        
-        i_operand_r <= std_ulogic_vector(to_signed(-51, i_operand_r'length));
-        wait for c_CLK_PERIOD;
-        
-        i_operand_l <= (others => '1');
-        i_operand_r <= (others => '0');
-        i_operation <= c_ALU_RL;
-        wait;
-        
+        loop
+            wait for c_CLK_PERIOD;
+            
+            i_z_index <= std_ulogic_vector(unsigned(i_z_index) + 1);
+            i_z_data  <= std_ulogic_vector(unsigned(i_z_data) + 1);
+            i_y_index <= std_ulogic_vector(unsigned(i_y_index) + 3);
+            i_x_index <= std_ulogic_vector(unsigned(i_y_index) + 5);
+            
+            if (i_z_index = c_REG_R0) then
+                i_z_we <= not i_z_we;
+            end if;
+        end loop;
     end process stimulus;
     
 end architecture behavior;

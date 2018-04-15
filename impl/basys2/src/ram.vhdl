@@ -28,7 +28,7 @@ use ieee.numeric_std.all;
 library std;
 use std.textio.all;
 
-use work.util.all; -- util.vhd
+use work.util.all;
 
 
 entity ram is

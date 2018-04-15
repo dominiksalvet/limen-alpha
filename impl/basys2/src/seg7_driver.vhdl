@@ -20,7 +20,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.hex_to_seg7; -- hex_to_seg7.vhd
+use work.hex_to_seg7;
 
 
 entity seg7_driver is

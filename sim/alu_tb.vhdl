@@ -1,7 +1,4 @@
 --------------------------------------------------------------------------------
--- Standard: VHDL-1993
--- Platform: independent
---------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
 -- Notes:
@@ -12,51 +9,61 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.reg_file_interf.all; -- reg_file_interf.vhd
+use work.alu_interf.all;
 
 
-entity reg_file is
-    port (
-        i_clk : in std_ulogic;
-        
-        i_z_we    : in std_ulogic;
-        i_z_index : in std_ulogic_vector(2 downto 0);
-        i_z_data  : in std_ulogic_vector(15 downto 0);
-        
-        i_y_index : in  std_ulogic_vector(2 downto 0);
-        o_y_data  : out std_ulogic_vector(15 downto 0);
-        
-        i_x_index : in  std_ulogic_vector(2 downto 0);
-        o_x_data  : out std_ulogic_vector(15 downto 0)
-    );
-end entity reg_file;
+entity alu_tb is
+end entity alu_tb;
 
 
-architecture rtl of reg_file is
+architecture behavior of alu_tb is
     
-    constant c_REG_R0_VALUE : std_ulogic_vector(15 downto 0) := x"0000";
+    -- uut ports
+    signal i_operation : std_ulogic_vector(3 downto 0)  := (others => '0');
+    signal i_sub_add   : std_ulogic                     := '0';
+    signal i_operand_l : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal i_operand_r : std_ulogic_vector(15 downto 0) := (others => '0');
+    signal o_result    : std_ulogic_vector(15 downto 0);
     
-    type t_REGISTERS is array(0 to 7) of std_ulogic_vector(15 downto 0);
-    signal r_registers : t_REGISTERS := (
-        0      => c_REG_R0_VALUE,
-        others => (others => 'U')
-        );
+    -- clock period definition
+    constant c_CLK_PERIOD : time := 10 ns;
     
 begin
     
-    o_y_data <= r_registers(to_integer(unsigned(i_y_index)));
-    o_x_data <= r_registers(to_integer(unsigned(i_x_index)));
+    -- instantiate the unit under test (uut)
+    uut : entity work.alu(rtl)
+        port map (
+            i_operation => i_operation,
+            i_sub_add   => i_sub_add,
+            i_operand_l => i_operand_l,
+            i_operand_r => i_operand_r,
+            o_result    => o_result
+        );
     
-    registers_write : process (i_clk) is
+    stimulus : process is
     begin
-        if (rising_edge(i_clk)) then
-            if (i_z_we = '1' and i_z_index /= c_REG_R0) then
-                r_registers(to_integer(unsigned(i_z_index))) <= i_z_data;
-            end if;
-        end if;
-    end process registers_write;
+        
+        i_operation <= c_ALU_OR;
+        i_operand_l <= "1100110011001100";
+        i_operand_r <= "0011001100110011";
+        wait for c_CLK_PERIOD;
+        
+        i_operation <= c_ALU_ADD;
+        i_operand_l <= std_ulogic_vector(to_signed(52, i_operand_l'length));
+        i_operand_r <= std_ulogic_vector(to_signed(76, i_operand_r'length));
+        wait for c_CLK_PERIOD;
+        
+        i_operand_r <= std_ulogic_vector(to_signed(-51, i_operand_r'length));
+        wait for c_CLK_PERIOD;
+        
+        i_operand_l <= (others => '1');
+        i_operand_r <= (others => '0');
+        i_operation <= c_ALU_RL;
+        wait;
+        
+    end process stimulus;
     
-end architecture rtl;
+end architecture behavior;
 
 
 --------------------------------------------------------------------------------

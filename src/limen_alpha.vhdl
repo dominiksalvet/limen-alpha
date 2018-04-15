@@ -12,9 +12,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.limen_alpha_public.all; -- limen_alpha_public.vhd
+use work.limen_alpha_public.all;
 
-use work.core; -- core.vhd
+use work.core;
 
 
 entity limen_alpha is

@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Standard: VHDL-1993
--- Platform: independent
+-- Platform: basys2
 --------------------------------------------------------------------------------
 -- Description:
 --------------------------------------------------------------------------------
@@ -10,40 +10,79 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-use work.jmp_tester_interf.all; -- jmp_tester_interf.vhd
+use work.clk_divider;
+
+use work.limen_alpha;
+
+use work.ram;
 
 
-entity jmp_tester is
-    port (
-        i_jmp_type  : in  std_ulogic_vector(2 downto 0);
-        i_test_data : in  std_ulogic_vector(15 downto 0);
-        o_jmp_ack   : out std_ulogic
+entity limen_alpha_basys2 is
+    generic (
+        RWM_ADDR_WIDTH : positive := 8
     );
-end entity jmp_tester;
+    port (
+        clk   : in std_ulogic;
+        rst   : in std_ulogic;
+        irq_0 : in std_ulogic;
+        irq_1 : in std_ulogic
+    );
+end entity limen_alpha_basys2;
 
 
-architecture rtl of jmp_tester is
+architecture rtl of limen_alpha_basys2 is
     
-    signal w_equal_zero : std_ulogic;
-    signal w_less_zero  : std_ulogic;
+    signal la_clk      : std_ulogic;
+    signal la_mem_in   : std_ulogic_vector(15 downto 0);
+    signal la_mem_we   : std_ulogic;
+    signal la_mem_addr : std_ulogic_vector(15 downto 0);
+    signal la_mem_out  : std_ulogic_vector(15 downto 0);
     
 begin
     
-    w_equal_zero <= '1' when i_test_data = (15 downto 0 => '0') else '0';
+    clk_divider_la : entity work.clk_divider(rtl)
+        generic map (
+            g_FREQ_DIV_MAX_VALUE => 200_000
+        )
+        port map (
+            i_clk => clk,
+            i_rst => rst,
+            
+            i_freq_div => 200_000,
+            o_clk      => la_clk
+        );
     
-    w_less_zero <= i_test_data(15);
+    limen_alpha_0 : entity work.limen_alpha(rtl)
+        port map (
+            clk   => la_clk,
+            rst   => rst,
+            irq_0 => irq_0,
+            irq_1 => irq_1,
+            
+            mem_in   => la_mem_in,
+            mem_we   => la_mem_we,
+            mem_addr => la_mem_addr,
+            mem_out  => la_mem_out
+        );
     
-    with i_jmp_type select o_jmp_ack <= 
-        '0'                                  when c_JMP_NEVER,
-        '1'                                  when c_JMP_ALWAYS,
-        not w_equal_zero                     when c_JMP_NE,
-        w_equal_zero                         when c_JMP_E,
-        w_less_zero                          when c_JMP_L,
-        w_less_zero or w_equal_zero          when c_JMP_LE,
-        not w_less_zero and not w_equal_zero when c_JMP_G,
-        not w_less_zero                      when c_JMP_GE,
-        'X'                                  when others;
+    ram_0 : entity work.ram(rtl)
+        generic map (
+            g_ADDR_WIDTH => RWM_ADDR_WIDTH,
+            g_DATA_WIDTH => 16,
+            
+            g_MEM_IMG_FILENAME => ""
+        )
+        port map (
+            i_clk => la_clk,
+            
+            i_we   => la_mem_we,
+            i_re   => '1',
+            i_addr => la_mem_addr(RWM_ADDR_WIDTH - 1 downto 0),
+            i_data => la_mem_out,
+            o_data => la_mem_in
+        );
     
 end architecture rtl;
 
