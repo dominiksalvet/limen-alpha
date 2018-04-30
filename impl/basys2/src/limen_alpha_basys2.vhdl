@@ -32,7 +32,7 @@ entity limen_alpha_basys2 is
 end entity limen_alpha_basys2;
 
 
-architecture rtl of limen_alpha_basys2 is
+architecture structural of limen_alpha_basys2 is
     
     signal la_clk      : std_ulogic;
     signal la_mem_in   : std_ulogic_vector(15 downto 0);
@@ -84,7 +84,7 @@ begin
             o_data => la_mem_in
         );
     
-end architecture rtl;
+end architecture structural;
 
 
 --------------------------------------------------------------------------------
