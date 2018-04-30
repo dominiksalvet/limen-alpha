@@ -6,6 +6,7 @@ The work on processor itself is now finished. However, I am currently intensivel
 
 ## To do list
 * get the [VHDL Collection](https://github.com/dominiksalvet/vhdl_collection) repository to a consistent and stable state
+* apply new conventions from previous point to this repository
 * remaster the following source files (the first iteration - code formatting):
   * [*core.vhd*](src/core.vhd) + [*core_tb.vhd*](sim/core_tb.vhd)
   * [*limen_alpha.vhd*](src/limen_alpha.vhd) + [*limen_alpha_tb.vhd*](sim/limen_alpha_tb.vhd)
