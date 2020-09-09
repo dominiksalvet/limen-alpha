@@ -4,6 +4,8 @@
 
 # Limen Alpha Processor
 
+![Limen Alpha pipeline](img/pipeline.png)
+
 Limen Alpha is a dual-core 16-bit RISC processor architecture with a hardware synchronization support between the cores. The original code was written 3 years ago and then succesfully used as part of my high school final work. However, it has changed since then a lot. The processor has been redesigned to make possible being a dual-core processor. Also a hardware interrupt driving has been added for both cores.
 
 The work on processor itself is now finished. However, I am currently intensively working on this project transition to format I am using now, see the list below for details.
