@@ -22,7 +22,7 @@ The work on processor itself is now finished. However, I am currently intensivel
 * transfer documentation files
 * transfer common software for the processor
 * create a testing software for the basys2 implementation
-* create a meaningful [*README.md*](README.md) file
+* create a meaningful [*readme.md*](readme.md) file
 
 ## License
 
