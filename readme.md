@@ -1,35 +1,19 @@
-**This repository is going to be [remastered](https://github.com/users/dominiksalvet/projects/2#card-26446302) sometime in the future.**
-
----
-
-# Limen Alpha Processor
+# Limen Alpha
 
 ![Limen Alpha pipeline](doc/img/pipeline.png)
 
-Limen Alpha is a dual-core 16-bit RISC processor architecture with a hardware synchronization support between the cores. The original code was written 3 years ago and then succesfully used as part of my high school final work. However, it has changed since then a lot. The processor has been redesigned to make possible being a dual-core processor. Also a hardware interrupt driving has been added for both cores.
+> Dual-core 16-bit RISC processor.
 
-The work on processor itself is now finished. However, I am currently intensively working on this project transition to format I am using now, see the list below for details.
+Limen Alpha is a dual-core 16-bit RISC processor architecture with hardware synchronization support between the cores. The [original code](https://github.com/dominiksalvet/limen) was established in 2015, and then successfully used as a part of [my high school thesis](https://github.com/dominiksalvet/high-school-thesis). However, it has changed a lot since then. The processor has been redesigned to make dual-core possible. Also, hardware interrupt support has been added for both cores.
 
-## To do list
-* get the [VHDL Collection](https://github.com/dominiksalvet/vhdl_collection) repository to a consistent and stable state
-* apply new conventions from previous point to this repository
-* remaster the following source files (the first iteration - code formatting):
-  * [*core.vhd*](src/core.vhd) + [*core_tb.vhd*](sim/core_tb.vhd)
-  * [*limen_alpha.vhd*](src/limen_alpha.vhd) + [*limen_alpha_tb.vhd*](sim/limen_alpha_tb.vhd)
-  * [*limen_alpha_basys2.vhd*](impl/basys2/src/limen_alpha_basys2.vhd)
-* remaster all VHDL module's files (the second iteration - light optimization, commenting)
-* remaster all test bench files (create meaningful simulations, commenting)
-* transfer documentation files
-* transfer common software for the processor
-* create a testing software for the basys2 implementation
-* create a meaningful [*readme.md*](readme.md) file
+The work on the processor itself is now finished. However, the used coding conventions may be outdated comparing to my current standards.
 
-## License
+## Machine Code
 
-This project is licensed under an Open Source Initiative approved license, the MIT License. See the [*license*](license) file for details. Individual files contain the SPDX license identifier instead of the full license text.
+If you are curious how the machine code of Limen Alpha looks like, browse the [collection of such programs](sw).
 
-<p align="center">
-  <a href="http://opensource.org/">
-    <img src="https://opensource.org/files/osi_logo_bold_300X400_90ppi.png" width="100">
-  </a>
-</p>
+## Useful Resources
+
+* [support.md](support.md) – questions, answers, help
+* [contributing.md](contributing.md) – how to get involve
+* [license](license) – author and license
