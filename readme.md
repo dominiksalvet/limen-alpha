@@ -14,6 +14,22 @@ The work on the processor itself is now finished. However, the used coding conve
 
 If you are curious how the machine code of Limen Alpha looks like, browse the [collection of such programs](sw).
 
+## Original Plan
+
+The original intention was to design and release also the following Limen processors.
+
+### Limen Beta
+
+* Optimized critical paths
+* Simple memory protection
+* Single core only
+* Improve simulation system
+
+### Limen Gamma
+
+* Six-stage pipelining
+* Cache included
+
 ## Useful Resources
 
 * [support.md](support.md) – questions, answers, help
